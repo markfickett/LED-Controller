@@ -82,21 +82,3 @@ void loop() {
 	}
 }
 
-// Take the current strip color array and push it out.
-void sendColors() {
-	/*
-	 * Once the 24 bits have been delivered, the IC immediately relays
-	 *	these bits to its neighbor.
-	 * Pulling the clock low for 500us or more causes the IC to post the
-	 *	data.
-	 */
-
-	for(int ledNumber = 0; ledNumber < STRIP_LENGTH; ledNumber++) {
-		Color c(stripColors[ledNumber]);
-		c.send(PIN_SDI, PIN_CKI);
-	}
-
-	// Pull clock low to put strip into reset/post mode.
-	digitalWrite(PIN_CKI, LOW);
-	delayMicroseconds(500); // Wait for 500us to go into reset.
-}
