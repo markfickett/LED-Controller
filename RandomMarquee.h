@@ -4,7 +4,7 @@
 #include "Color.h"
 #include "Interval.h"
 
-#define MOVE_INTERVAL   250
+#define MOVE_INTERVAL   100
 
 /**
  * A sequence of random Colors which marches along an LED strip.

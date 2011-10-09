@@ -27,7 +27,10 @@ bool RandomMarquee::update() {
 }
 
 void RandomMarquee::advance() {
-	startIndex = (startIndex + 1) % STRIP_LENGTH;
+	startIndex = startIndex - 1;
+	if (startIndex < 0) {
+		startIndex += STRIP_LENGTH;
+	}
 }
 
 void RandomMarquee::apply(Color* stripColors) {
@@ -35,11 +38,9 @@ void RandomMarquee::apply(Color* stripColors) {
 	for(int sourceIndex = startIndex; sourceIndex < STRIP_LENGTH;
 		i++, sourceIndex++)
 	{
-		stripColors[i].add(colors[startIndex]);
+		stripColors[i].add(colors[sourceIndex]);
 	}
-	for(int sourceIndex = 0; i < STRIP_LENGTH;
-		i++, sourceIndex++)
-	{
+	for(int sourceIndex = 0; i < STRIP_LENGTH; i++, sourceIndex++) {
 		stripColors[i].add(colors[sourceIndex]);
 	}
 }
