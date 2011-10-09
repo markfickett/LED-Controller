@@ -2,8 +2,6 @@
 
 #include "WProgram.h"
 
-#define MOVE_INTERVAL	250
-
 RandomMarquee::RandomMarquee() : addColorInterval(MOVE_INTERVAL) {
 	startIndex = 0;
 
@@ -16,7 +14,8 @@ RandomMarquee::RandomMarquee() : addColorInterval(MOVE_INTERVAL) {
 }
 
 bool RandomMarquee::update() {
-	if (addColorInterval.update()) {
+	addColorInterval.update();
+	if (addColorInterval.isExpired()) {
 		addColorInterval.clearExpired();
 		advance();
 		colors[startIndex].setRandom();
