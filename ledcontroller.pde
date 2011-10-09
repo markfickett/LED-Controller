@@ -43,32 +43,30 @@
  * Red = SDI
  */
 
+#include "Parameters.h"
 #include "Color.h"
+#include "RandomMarquee.h"
+#include "LedStrip.h"
 
 #define PIN_SDI 2		// Red data wire (not the red 5V wire!)
 #define PIN_CKI 3		// Green wire
 #define PIN_STATUS_LED 13	// On board LED
 
-#define STRIP_LENGTH 32		// 32 LEDs on this strip
-long stripColors[STRIP_LENGTH];
+RandomMarquee marquee = RandomMarquee();
+LedStrip ledStrip = LedStrip();
+Color stripColors[STRIP_LENGTH];
 
 void setup() {
 	pinMode(PIN_SDI, OUTPUT);
 	pinMode(PIN_CKI, OUTPUT);
 	pinMode(PIN_STATUS_LED, OUTPUT);
 
-	// Clear out the array.
-	memset(stripColors, 0, sizeof(stripColors));
-
 	randomSeed(analogRead(0));
 
-	// Pre-fill the color array with known values.
-	stripColors[0] = 0xFF0000; //Bright Red
-	stripColors[1] = 0x00FF00; //Bright Green
-	stripColors[2] = 0x0000FF; //Bright Blue
-	stripColors[3] = 0x010000; //Faint red
-	stripColors[4] = 0x800000; //1/2 red (0x80 = 128 out of 256)
-	post_frame(); //Push the current color frame to the strip
+	ledStrip.clear();
+	marquee.update();
+	marquee.apply(ledStrip.getColors());
+	ledStrip.send(PIN_SDI, PIN_CKI);
 
 	Serial.begin(9600);
 	Serial.println("Hello! Setup complete.");
@@ -77,35 +75,15 @@ void setup() {
 }
 
 void loop() {
-	addRandom();
-	post_frame(); // Push the current color frame to the strip.
-
-	// Blink the status LED on the board for a quarter second.
-	digitalWrite(PIN_STATUS_LED, HIGH);
-	delay(250);
-	digitalWrite(PIN_STATUS_LED, LOW);
-	delay(250);
-}
-
-// Throws random colors down the strip array
-void addRandom(void) {
-	int x;
-
-	// First, shuffle all the current colors down one spot on the strip.
-	for(x = (STRIP_LENGTH - 1) ; x > 0 ; x--) {
-		stripColors[x] = stripColors[x - 1];
+	if (marquee.update()) {
+		ledStrip.clear();
+		marquee.apply(ledStrip.getColors());
+		ledStrip.send(PIN_SDI, PIN_CKI);
 	}
-
-	// Now form a new random RGB color.
-	Color c = Color();
-	c.setRandom();
-	stripColors[0] = c.getCombinedValue();
-
-	Serial.println(c.getCombinedValue());
 }
 
 // Take the current strip color array and push it out.
-void post_frame (void) {
+void sendColors() {
 	/*
 	 * Once the 24 bits have been delivered, the IC immediately relays
 	 *	these bits to its neighbor.

@@ -6,19 +6,28 @@
 #define BITS_PER_COLOR		24
 
 Color::Color() {
-	combinedValue = 0;
+	clear();
 }
 
 Color::Color(long combinedValue) {
 	this->combinedValue = combinedValue;
 }
 
-void Color::setRandom() {
+void Color::clear() {
 	combinedValue = 0;
+}
+
+void Color::setRandom() {
+	clear();
 	for(int i = 0; i < 3; i++) {
 		combinedValue <<= BITS_PER_CHANNEL;
 		combinedValue |= random(0xFF);	// random value in [0, 0xFF]
 	}
+}
+
+void Color::add(Color& other) {
+	// TODO: Handle overflow.
+	combinedValue = other.combinedValue;
 }
 
 long Color::getCombinedValue() {

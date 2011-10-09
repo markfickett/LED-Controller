@@ -12,6 +12,9 @@ class Color {
 		/** Create a new Color with the given combined-value color. */
 		Color(long combinedValue);
 
+		/** Reset the Color to black. */
+		void clear();
+
 		/** Set the Color to a random value. */
 		void setRandom();
 
@@ -22,6 +25,11 @@ class Color {
 		 * as R7..R0, G7..G0, B7..B0.
 		 */
 		long getCombinedValue();
+
+		/**
+		 * Add another Color to this one. Clamp overflow per-channel.
+		 */
+		void add(Color& other);
 
 		/**
 		 * Send the Color's data on the given pins. These pins should
