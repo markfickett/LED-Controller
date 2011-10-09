@@ -14,14 +14,14 @@ bool Interval::update() {
 	unsigned long currentMillis = millis();
 	unsigned long elapsedMillis;
 	if (currentMillis >= lastExpiredMillis) {
-		elapsedMillis = lastExpiredMillis - currentMillis;
+		elapsedMillis = currentMillis - lastExpiredMillis;
 	} else {
 		elapsedMillis = (MILLIS_MAX - lastExpiredMillis)
 			+ currentMillis;
 	}
-	if (elapsedMillis > intervalMillis) {
+	if (elapsedMillis >= intervalMillis) {
 		lastExpiredMillis = currentMillis
-			+ (elapsedMillis % intervalMillis);
+			- (elapsedMillis % intervalMillis);
 		expired = true;
 	}
 	return expired;
