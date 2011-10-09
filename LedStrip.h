@@ -16,7 +16,14 @@ class LedStrip {
 		/** Clear all the Colors. */
 		void clear();
 
-		/** Send all the Colors. */
+		/**
+		 * Send all the Colors.
+		 *
+		 * This has all the Colors in the internal array send their
+		 * bits, and then pauses with clockPin low for an additional
+		 * 500 microseconds, causing the WS2081 ICs to switch from
+		 * passing values along to showing colors.
+		 */
 		void send(int dataPin, int clockPin);
 
 		/** Get the internal color array, so others can adjust it. */
