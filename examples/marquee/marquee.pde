@@ -51,9 +51,6 @@ void setup() {
 	marquee.apply(ledStrip.getColors());
 	ledStrip.send(PIN_SDI, PIN_CKI);
 
-	Serial.begin(9600);
-	Serial.println("Hello! Setup complete.");
-
 	delay(2000);
 }
 

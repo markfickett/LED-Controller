@@ -2,9 +2,11 @@
 
 #include "WProgram.h"
 
+#define DEFAULT_MOVE_INTERVAL   250
+
 LED_CONTROLLER_NAMESPACE_USING
 
-RandomMarquee::RandomMarquee() : addColorInterval(MOVE_INTERVAL) {
+RandomMarquee::RandomMarquee() : addColorInterval(DEFAULT_MOVE_INTERVAL) {
 	startIndex = 0;
 
 	// Put some known values at the start of the marquee.
@@ -26,7 +28,6 @@ bool RandomMarquee::update() {
 			colors[startIndex] = Color(colors[startIndex]
 				.getCombinedValue() & 0x070707);
 		}
-		Serial.println(colors[startIndex].getCombinedValue());
 		return true;
 	} else {
 		return false;
@@ -38,6 +39,10 @@ void RandomMarquee::advance() {
 	if (startIndex < 0) {
 		startIndex += STRIP_LENGTH;
 	}
+}
+
+void RandomMarquee::setInterval(int interval) {
+	addColorInterval.setInterval(interval);
 }
 
 void RandomMarquee::apply(Color* stripColors) {

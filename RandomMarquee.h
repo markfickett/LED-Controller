@@ -5,8 +5,6 @@
 #include "Color.h"
 #include "Interval.h"
 
-#define MOVE_INTERVAL   250
-
 LED_CONTROLLER_NAMESPACE_ENTER
 
 /**
@@ -23,13 +21,18 @@ class RandomMarquee{
 		RandomMarquee();
 
 		/**
-		 * Every MOVE_INTERVAL, shift all the Colors one along the strip
+		 * Every interval, shift all the Colors one along the strip
 		 * and add a new random Color at the beginning.
 		 *
 		 * @return whether the marquee changed (moved)
 		 */
 		bool update();
 		void apply(Color* stripColors);
+
+		/**
+		 * Set the interval between moves.
+		 */
+		void setInterval(int interval);
 };
 
 LED_CONTROLLER_NAMESPACE_EXIT

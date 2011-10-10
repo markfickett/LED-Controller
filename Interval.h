@@ -18,6 +18,7 @@ class Interval {
 		bool update();
 		bool isExpired();
 		void clearExpired();
+		void setInterval(int newIntervalMillis);
 };
 
 LED_CONTROLLER_NAMESPACE_EXIT

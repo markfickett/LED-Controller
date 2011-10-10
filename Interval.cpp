@@ -36,3 +36,7 @@ bool Interval::isExpired() {
 void Interval::clearExpired() {
 	expired = false;
 }
+
+void Interval::setInterval(int newIntervalMillis) {
+	intervalMillis = newIntervalMillis;
+}
