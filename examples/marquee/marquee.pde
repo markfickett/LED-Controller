@@ -38,7 +38,6 @@ using LedController::RandomMarquee;
 
 RandomMarquee marquee = RandomMarquee();
 LedStrip ledStrip = LedStrip();
-Color stripColors[STRIP_LENGTH];
 
 void setup() {
 	pinMode(PIN_SDI, OUTPUT);
