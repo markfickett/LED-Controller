@@ -4,6 +4,8 @@
 
 #define MILLIS_MAX	~((unsigned long)0)
 
+LED_CONTROLLER_NAMESPACE_USING
+
 Interval::Interval(unsigned long intervalMillis) {
 	this->intervalMillis = intervalMillis;
 	lastExpiredMillis = millis();

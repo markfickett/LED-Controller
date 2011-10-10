@@ -5,6 +5,8 @@
 #define BITS_PER_CHANNEL	8
 #define BITS_PER_COLOR		24
 
+LED_CONTROLLER_NAMESPACE_USING
+
 Color::Color() {
 	clear();
 }

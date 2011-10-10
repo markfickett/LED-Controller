@@ -1,10 +1,13 @@
 #pragma once
 
+#include "Namespace.h"
 #include "Parameters.h"
 #include "Color.h"
 #include "Interval.h"
 
 #define MOVE_INTERVAL   250
+
+LED_CONTROLLER_NAMESPACE_ENTER
 
 /**
  * A sequence of random Colors which marches along an LED strip.
@@ -28,3 +31,5 @@ class RandomMarquee{
 		bool update();
 		void apply(Color* stripColors);
 };
+
+LED_CONTROLLER_NAMESPACE_EXIT

@@ -2,6 +2,8 @@
 
 #include "WProgram.h"
 
+LED_CONTROLLER_NAMESPACE_USING
+
 LedStrip::LedStrip() {
 }
 

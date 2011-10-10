@@ -1,9 +1,12 @@
 #pragma once
 
+#include "Namespace.h"
+
+LED_CONTROLLER_NAMESPACE_ENTER
+
 /**
  * Provide convenience methods around colors for an LED strip.
  */
-
 class Color {
 	public:
 		/** Create a new black Color. */
@@ -49,3 +52,5 @@ class Color {
 	private:
 		long combinedValue;
 };
+
+LED_CONTROLLER_NAMESPACE_EXIT

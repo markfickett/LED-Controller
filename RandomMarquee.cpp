@@ -2,6 +2,8 @@
 
 #include "WProgram.h"
 
+LED_CONTROLLER_NAMESPACE_USING
+
 RandomMarquee::RandomMarquee() : addColorInterval(MOVE_INTERVAL) {
 	startIndex = 0;
 

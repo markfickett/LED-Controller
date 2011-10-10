@@ -1,7 +1,10 @@
 #pragma once
 
+#include "Namespace.h"
 #include "Parameters.h"
 #include "Color.h"
+
+LED_CONTROLLER_NAMESPACE_ENTER
 
 /**
  * Manages the colors of an addressable LED strip.
@@ -29,3 +32,5 @@ class LedStrip {
 		/** Get the internal color array, so others can adjust it. */
 		Color* getColors();
 };
+
+LED_CONTROLLER_NAMESPACE_EXIT

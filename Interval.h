@@ -1,9 +1,12 @@
 #pragma once
 
+#include "Namespace.h"
+
+LED_CONTROLLER_NAMESPACE_ENTER
+
 /**
  * Track time intervals, including handling clock wrapping.
  */
-
 class Interval {
 	private:
 		unsigned long intervalMillis;
@@ -16,3 +19,5 @@ class Interval {
 		bool isExpired();
 		void clearExpired();
 };
+
+LED_CONTROLLER_NAMESPACE_EXIT
