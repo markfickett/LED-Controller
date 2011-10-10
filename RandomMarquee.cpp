@@ -19,6 +19,11 @@ bool RandomMarquee::update() {
 		addColorInterval.clearExpired();
 		advance();
 		colors[startIndex].setRandom();
+		if (startIndex % 5 != 0) {
+			// Only make every fifth color full brightness.
+			colors[startIndex] = Color(colors[startIndex]
+				.getCombinedValue() & 0x070707);
+		}
 		Serial.println(colors[startIndex].getCombinedValue());
 		return true;
 	} else {
