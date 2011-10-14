@@ -25,8 +25,7 @@ bool RandomMarquee::update() {
 		colors[startIndex].setRandom();
 		if (startIndex % 5 != 0) {
 			// Only make every fifth color full brightness.
-			colors[startIndex] = Color(colors[startIndex]
-				.getCombinedValue() & 0x070707);
+			colors[startIndex] = colors[startIndex].scaled(0.05);
 		}
 		return true;
 	} else {

@@ -2,18 +2,40 @@
 
 #include "Namespace.h"
 
+#define CHANNELS_PER_COLOR	3
+
+#ifndef byte
+typedef unsigned char byte;
+#endif
+
 LED_CONTROLLER_NAMESPACE_ENTER
 
 /**
  * Provide convenience methods around colors for an LED strip.
  */
 class Color {
+	private:
+		/**
+		 * This is an RGB triple, each channel most significant bit
+		 * first (which is the default for bytes, but also necessary
+		 * for the {@link send()} implementation.
+		 */
+		byte color[CHANNELS_PER_COLOR];
+
+		static void sendColorByte(int dataPin, int clockPin, byte c);
+
 	public:
-		/** Create a new black Color. */
+		/**
+		 * Create a new Color, defaulting to black.
+		 */
 		Color();
 
-		/** Create a new Color with the given combined-value color. */
-		Color(long combinedValue);
+		/**
+		 * Create a new Color with the given combined-value color.
+		 * @param combinedValue a color specified as a 24-bit number,
+		 *	for example 0xFF0066 (equivalent to rgb(255, 0, 102))
+		 */
+		Color(unsigned long combinedValue);
 
 		/** Reset the Color to black. */
 		void clear();
@@ -22,17 +44,16 @@ class Color {
 		void setRandom();
 
 		/**
-		 * Get the combined Color value, suitable for pushing to the
-		 * LED strip. This is a 24 bit value (8 bits for each primary),
-		 * in RGB order, each color value most-significant-bit first,
-		 * as R7..R0, G7..G0, B7..B0.
-		 */
-		long getCombinedValue();
-
-		/**
 		 * Add another Color to this one. Clamp overflow per-channel.
 		 */
-		void add(Color& other);
+		void add(const Color& other);
+
+		/**
+		 * Get a scaled version of this color.
+		 * @param f fraction of this color's brightness (linearly,
+		 *	and uniformly across channels)
+		 */
+		Color scaled(float f);
 
 		/**
 		 * Send the Color's data on the given pins. These pins should
@@ -49,8 +70,6 @@ class Color {
 		 *	the clock pin associated with data input
 		 */
 		void send(int dataPin, int clockPin);
-	private:
-		long combinedValue;
 };
 
 LED_CONTROLLER_NAMESPACE_EXIT
