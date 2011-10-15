@@ -10,7 +10,7 @@ LED_CONTROLLER_NAMESPACE_ENTER
 /**
  * A sequence of random Colors which marches along an LED strip.
  */
-class RandomMarquee{
+class RandomMarquee {
 	private:
 		Color colors[STRIP_LENGTH];
 		Interval addColorInterval;
