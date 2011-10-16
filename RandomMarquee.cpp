@@ -23,10 +23,10 @@ bool RandomMarquee::update() {
 		addColorInterval.clearExpired();
 		advance();
 		colors[startIndex].setRandom();
-		if (startIndex % 5 != 0) {
-			// Only make every fifth color full brightness.
-			colors[startIndex] = colors[startIndex].scaled(0.05);
-		}
+		// Dim the whole strip, make every fifth color brighter.
+		float scaleAmount = startIndex % 5 == 0 ?
+			0.3 : 0.05;
+		colors[startIndex] = colors[startIndex].scaled(scaleAmount);
 		return true;
 	} else {
 		return false;
