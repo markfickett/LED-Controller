@@ -1,15 +1,17 @@
 #include "MovingPeak.h"
-#include "Parameters.h"
+#include "Config.h"
 
 #include "WProgram.h"
 
 #define DEFAULT_INTERVAL	10
 #define FALLOFF			0.2
+#define BOUNCE_LIMIT_DEFAULT	2
 
 LED_CONTROLLER_NAMESPACE_USING
 
 MovingPeak::MovingPeak(const Color& color) :
-	moveAndDecayInterval(DEFAULT_INTERVAL)
+	moveAndDecayInterval(DEFAULT_INTERVAL),
+	bounces(0)
 {
 	baseColor = color;
 	setIntensity(1.0);
@@ -48,7 +50,10 @@ void MovingPeak::advance() {
 		increment = 1;
 	}
 	if (bounced) {
-		// TODO: Eventually decay to death / stop updating.
+		bounces++;
+		if (bounces >= BOUNCE_LIMIT_DEFAULT) {
+			expire();
+		}
 		moveAndDecayInterval.setInterval(
 			moveAndDecayInterval.getInterval()*2);
 		intensity *= FALLOFF;

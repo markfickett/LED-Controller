@@ -3,6 +3,7 @@
 #include "Namespace.h"
 #include "Color.h"
 #include "Interval.h"
+#include "Pattern.h"
 
 LED_CONTROLLER_NAMESPACE_ENTER
 
@@ -13,13 +14,14 @@ LED_CONTROLLER_NAMESPACE_ENTER
  * The spot bounces at the strip's ends, and at each bounce reduces in
  * both velocity and intensity.
  */
-class MovingPeak {
+class MovingPeak : public Pattern {
 	private:
 		Color baseColor;
 		float intensity;
 		Interval moveAndDecayInterval;
 		int position;
 		int increment;
+		int bounces;
 
 		void advance();
 	public:

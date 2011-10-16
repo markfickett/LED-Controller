@@ -6,10 +6,12 @@
 
 #include "Namespace.h"
 
-#include "Parameters.h"
+#include "Config.h"
 #include "Interval.h"
 #include "Color.h"
 #include "LedStrip.h"
 
+#include "Pattern.h"
+#include "PatternList.h"
 #include "RandomMarquee.h"
 #include "MovingPeak.h"

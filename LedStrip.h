@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Namespace.h"
-#include "Parameters.h"
+#include "Config.h"
 #include "Color.h"
 
 LED_CONTROLLER_NAMESPACE_ENTER
