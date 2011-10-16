@@ -12,3 +12,4 @@
 #include "LedStrip.h"
 
 #include "RandomMarquee.h"
+#include "MovingPeak.h"
