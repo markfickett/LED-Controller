@@ -40,3 +40,8 @@ void Interval::clearExpired() {
 void Interval::setInterval(int newIntervalMillis) {
 	intervalMillis = newIntervalMillis;
 }
+
+int Interval::getInterval() {
+	return intervalMillis;
+}
+
