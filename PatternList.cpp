@@ -13,7 +13,13 @@ PatternList::PatternList(Pattern* pattern) : prev(NULL), next(NULL) {
 PatternList::PatternList() : pattern(NULL), prev(NULL), next(NULL) {}
 
 void PatternList::append(Pattern* pattern) {
-	append(new PatternList(pattern));
+	PatternList* list = new PatternList(pattern);
+	if (list == NULL) {
+		Serial.print("!l");
+		Serial.flush();
+		return;
+	}
+	append(list);
 }
 
 void PatternList::append(PatternList* next) {
