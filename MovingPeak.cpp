@@ -6,6 +6,7 @@
 #define DEFAULT_INTERVAL	10
 #define FALLOFF			0.2
 #define BOUNCE_LIMIT_DEFAULT	2
+#define WINDOW			3
 
 LED_CONTROLLER_NAMESPACE_USING
 
@@ -61,7 +62,12 @@ void MovingPeak::advance() {
 }
 
 void MovingPeak::apply(Color* stripColors) {
-	for(int i = 0; i < STRIP_LENGTH; i++) {
+	if (isExpired()) {
+		return;
+	}
+	for(int i = max(0, position-WINDOW);
+		i < min(STRIP_LENGTH, position+WINDOW+1); i++)
+	{
 		float localIntensity = intensity *
 			pow(FALLOFF, abs(i - position));
 		stripColors[i].add(baseColor.scaled(localIntensity));
