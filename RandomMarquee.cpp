@@ -25,7 +25,7 @@ bool RandomMarquee::update() {
 		colors[startIndex].setRandom();
 		// Dim the whole strip, make every fifth color brighter.
 		float scaleAmount = startIndex % 5 == 0 ?
-			0.3 : 0.05;
+			0.03 : 0.005;
 		colors[startIndex] = colors[startIndex].scaled(scaleAmount);
 		return true;
 	} else {

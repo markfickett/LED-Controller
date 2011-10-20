@@ -4,14 +4,13 @@
 #include "Config.h"
 #include "Color.h"
 #include "Interval.h"
-#include "Pattern.h"
 
 LED_CONTROLLER_NAMESPACE_ENTER
 
 /**
  * A sequence of random Colors which marches along an LED strip.
  */
-class RandomMarquee : public Pattern {
+class RandomMarquee {
 	private:
 		Color colors[STRIP_LENGTH];
 		Interval addColorInterval;

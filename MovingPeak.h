@@ -3,7 +3,6 @@
 #include "Namespace.h"
 #include "Color.h"
 #include "Interval.h"
-#include "Pattern.h"
 
 LED_CONTROLLER_NAMESPACE_ENTER
 
@@ -14,7 +13,7 @@ LED_CONTROLLER_NAMESPACE_ENTER
  * The spot bounces at the strip's ends, and at each bounce reduces in
  * both velocity and intensity.
  */
-class MovingPeak : public Pattern {
+class MovingPeak {
 	private:
 		Color baseColor;
 		float intensity;
@@ -22,6 +21,7 @@ class MovingPeak : public Pattern {
 		int position;
 		int increment;
 		int bounces;
+		bool expired;
 
 		void advance();
 	public:
@@ -30,6 +30,9 @@ class MovingPeak : public Pattern {
 		 * color. It starts at the 0 end of the strip, moving quickly.
 		 */
 		MovingPeak(const Color& color);
+		MovingPeak();
+
+		void setColor(const Color& color);
 
 		/**
 		 * Set the base intensity (from which the peak's sides will
@@ -38,7 +41,8 @@ class MovingPeak : public Pattern {
 		void setIntensity(float intensity);
 
 		/**
-		 * Reset the peak's intensity, velocity, and position.
+		 * Reset the peak's intensity, velocity, and position,
+		 * and clear its expired status.
 		 */
 		void restart();
 
@@ -53,6 +57,9 @@ class MovingPeak : public Pattern {
 		 * Add this peak's colors to the strip, for output.
 		 */
 		void apply(Color* stripColors);
+
+		bool isExpired();
+		void expire();
 };
 
 LED_CONTROLLER_NAMESPACE_EXIT
