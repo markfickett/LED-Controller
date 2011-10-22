@@ -18,8 +18,7 @@ RandomMarquee::RandomMarquee() : addColorInterval(DEFAULT_MOVE_INTERVAL) {
 }
 
 bool RandomMarquee::update() {
-	addColorInterval.update();
-	if (addColorInterval.isExpired()) {
+	if (addColorInterval.update()) {
 		addColorInterval.clearExpired();
 		advance();
 		colors[startIndex].setRandom();
@@ -36,7 +35,7 @@ bool RandomMarquee::update() {
 void RandomMarquee::advance() {
 	startIndex = startIndex - 1;
 	if (startIndex < 0) {
-		startIndex += STRIP_LENGTH;
+		startIndex = STRIP_LENGTH - 1;
 	}
 }
 
