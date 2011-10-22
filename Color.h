@@ -22,11 +22,12 @@ class Color {
 		 */
 		byte color[CHANNELS_PER_COLOR];
 
+		/** @see {@link send()} */
 		static void sendColorByte(int dataPin, int clockPin, byte c);
 
 	public:
 		/**
-		 * Create a new Color, defaulting to black.
+		 * Create a new Color, defaulting to black: (0, 0, 0).
 		 */
 		Color();
 
@@ -40,7 +41,10 @@ class Color {
 		/** Reset the Color to black. */
 		void clear();
 
-		/** Set the Color to a random value. */
+		/**
+		 * Set the Color to a random value. This sets each channel
+		 * to a random number in its linear brightness range.
+		 */
 		void setRandom();
 
 		/**
