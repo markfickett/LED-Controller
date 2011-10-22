@@ -8,6 +8,8 @@ LED_CONTROLLER_NAMESPACE_ENTER
 
 /**
  * Manages the colors of an addressable LED strip.
+ *
+ * The size of the strip is defined by STRIP_LENGTH.
  */
 class LedStrip {
 	private:
@@ -29,7 +31,10 @@ class LedStrip {
 		 */
 		void send(int dataPin, int clockPin);
 
-		/** Get the internal color array, so others can adjust it. */
+		/**
+		 * Get the internal color array, so others can adjust it.
+		 * The array is of size STRIP_LENGTH.
+		 */
 		Color* getColors();
 };
 
