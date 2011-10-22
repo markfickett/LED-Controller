@@ -2,6 +2,7 @@
 
 #include "Namespace.h"
 
+// This is assumed to be 3 by various Color implementation details.
 #define CHANNELS_PER_COLOR	3
 
 #ifndef byte
