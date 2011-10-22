@@ -41,8 +41,7 @@ Color Color::scaled(float f) {
 	Color scaledColor = Color();
 	for(int i = 0; i < CHANNELS_PER_COLOR; i++) {
 		float s = f * float(color[i]);
-		s = min(s, float(0xFF));
-		s = max(0.0, s);
+		s = constrain(s, 0.0, float(0xFF));
 		scaledColor.color[i] = byte(s);
 	}
 	return scaledColor;
