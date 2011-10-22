@@ -7,17 +7,20 @@
 LED_CONTROLLER_NAMESPACE_ENTER
 
 /**
- * Provide a doubly linked list to hold, update, and apply Patterns.
+ * Provide a linked list to hold, update, and apply Patterns.
  *
  * The list also takes care of removing expired patterns.
  */
 class PatternList {
 	private:
 		Pattern* pattern;
-		PatternList* prev;
 		PatternList* next;
 
-		void remove();
+		/**
+		 * Remove and delete the 'next'. Take over
+		 * any subsequent PatternLists.
+		 */
+		void removeNext();
 	public:
 		/**
 		 * Create a new unconnected list node. The node holds and
@@ -37,8 +40,7 @@ class PatternList {
 		void append(Pattern* pattern);
 
 		/**
-		 * Connect the given node to the end of the list. If applicable,
-		 * disconnect its old 'previous' (but keep its 'next's).
+		 * Connect the given node to the end of the list.
 		 * Takes ownership.
 		 */
 		void append(PatternList* next);
@@ -55,13 +57,12 @@ class PatternList {
 		bool update();
 
 		/**
-		 * Call this node's Pattern, and recurr.
+		 * Call apply on this node's Pattern, and recurr on 'next'.
 		 */
 		void apply(Color* stripColors);
 
 		/**
-		 * Delete any 'next' nodes, as well as any Pattern. This does
-		 * not clean up the 'previous' node's link.
+		 * Delete any 'next' nodes, as well as any Pattern.
 		 */
 		~PatternList();
 };

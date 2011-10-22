@@ -6,11 +6,11 @@
 
 LED_CONTROLLER_NAMESPACE_USING
 
-PatternList::PatternList(Pattern* pattern) : prev(NULL), next(NULL) {
+PatternList::PatternList(Pattern* pattern) : next(NULL) {
 	this->pattern = pattern;
 }
 
-PatternList::PatternList() : pattern(NULL), prev(NULL), next(NULL) {}
+PatternList::PatternList() : pattern(NULL), next(NULL) {}
 
 void PatternList::append(Pattern* pattern) {
 	PatternList* list = new PatternList(pattern);
@@ -25,25 +25,23 @@ void PatternList::append(Pattern* pattern) {
 void PatternList::append(PatternList* next) {
 	if (this->next == NULL) {
 		this->next = next;
-		if (next->prev) {
-			next->prev->next = NULL;
-		}
-		next->prev = this;
 	} else {
 		this->next->append(next);
 	}
 }
 
-void PatternList::remove() {
+void PatternList::removeNext() {
+	if (next == NULL) {
+		return;
+	}
+
 	PatternList* oldNext = next;
-	PatternList* oldPrev = prev;
-	next = prev = NULL;
-	if (oldPrev != NULL) {
-		oldPrev->next = oldNext;
-	}
-	if (oldNext != NULL) {
-		oldNext->prev = oldPrev;
-	}
+	next = oldNext->next;
+	oldNext->next = NULL;
+	delete oldNext;
+
+	Serial.print("x");
+	Serial.flush();
 }
 
 bool PatternList::update() {
@@ -54,10 +52,7 @@ bool PatternList::update() {
 	if (next != NULL) {
 		updated |= next->update();
 		if (next->pattern != NULL && next->pattern->isExpired()) {
-			next->remove();
-			delete next;
-			Serial.print("x");
-			Serial.flush();
+			removeNext();
 		}
 	}
 	return updated;
