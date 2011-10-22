@@ -35,8 +35,8 @@ void PatternList::append(PatternList* next) {
 }
 
 void PatternList::remove() {
-	PatternList* oldNext = this->next;
-	PatternList* oldPrev = this->prev;
+	PatternList* oldNext = next;
+	PatternList* oldPrev = prev;
 	next = prev = NULL;
 	if (oldPrev != NULL) {
 		oldPrev->next = oldNext;
@@ -48,7 +48,7 @@ void PatternList::remove() {
 
 bool PatternList::update() {
 	bool updated = false;
-	if (pattern) {
+	if (pattern != NULL) {
 		updated |= pattern->update();
 	}
 	if (next != NULL) {
