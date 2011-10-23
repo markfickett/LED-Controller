@@ -38,6 +38,18 @@ class MovingPeak : public Pattern {
 		void setIntensity(float intensity);
 
 		/**
+		 * Set the peak's current position.
+		 * Clamped to [0, STRIP_LENGTH).
+		 */
+		void setPosition(int position);
+
+		/**
+		 * Set the peak's increment (direction of travel).
+		 * Calmped to -1 or 1.
+		 */
+		void setIncrement(int increment);
+
+		/**
 		 * Reset the peak's intensity, velocity, and position.
 		 */
 		void restart();

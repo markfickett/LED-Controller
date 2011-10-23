@@ -23,6 +23,14 @@ void MovingPeak::setIntensity(float intensity) {
 	this->intensity = constrain(intensity, 0.0, 1.0);
 }
 
+void MovingPeak::setPosition(int position) {
+	this->position = constrain(position, 0, STRIP_LENGTH-1);
+}
+
+void MovingPeak::setIncrement(int increment) {
+	this->increment = increment > 0 ? 1 : -1;
+}
+
 void MovingPeak::restart() {
 	moveAndDecayInterval.setInterval(DEFAULT_INTERVAL);
 	position = 0;
