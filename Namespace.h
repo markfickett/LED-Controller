@@ -4,7 +4,7 @@
  * Define the LED Controller library namespace and related macros.
  */
 
-#define LED_CONTROLLER_VERSION LedControllerVersion
+#define LED_CONTROLLER_VERSION v0_1
 
 #define LED_CONTROLLER_NAMESPACE LedController
 
