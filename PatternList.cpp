@@ -12,22 +12,23 @@ PatternList::PatternList(Pattern* pattern) : next(NULL) {
 
 PatternList::PatternList() : pattern(NULL), next(NULL) {}
 
-void PatternList::append(Pattern* pattern) {
+void PatternList::insert(Pattern* pattern) {
 	PatternList* list = new PatternList(pattern);
 	if (list == NULL) {
 		Serial.print("!l");
 		Serial.flush();
 		return;
 	}
-	append(list);
+	insert(list);
 }
 
-void PatternList::append(PatternList* next) {
-	if (this->next == NULL) {
-		this->next = next;
-	} else {
-		this->next->append(next);
+void PatternList::insert(PatternList* next) {
+	if (next->next != NULL) {
+		delete next->next;
 	}
+	PatternList* oldNext = this->next;
+	this->next = next;
+	this->next->next = oldNext;
 }
 
 void PatternList::removeNext() {

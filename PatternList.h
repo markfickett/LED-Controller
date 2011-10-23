@@ -35,15 +35,20 @@ class PatternList {
 
 		/**
 		 * Create a new PatternList to hold the given Pattern,
-		 * and append it (taking ownership).
+		 * and insert it (taking ownership).
 		 */
-		void append(Pattern* pattern);
+		void insert(Pattern* pattern);
 
 		/**
-		 * Connect the given node to the end of the list.
+		 * Insert the given node after this one. (This is preferable to
+		 * append because it is constant time / stack space.)
+		 *
+		 * If the given node has any subsequent nodes, they are
+		 * removed and deleted.
+		 *
 		 * Takes ownership.
 		 */
-		void append(PatternList* next);
+		void insert(PatternList* next);
 
 		/**
 		 * Update this node's Pattern, and recurr.
