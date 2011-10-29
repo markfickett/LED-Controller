@@ -31,8 +31,8 @@ class StateList : public Pattern {
 		bool statesChanged;
 		Color* stateColors[STRIP_LENGTH];
 
-		static Color colorPassed(0x00FF00);
-		static Color colorFailed(0xFF0000);
+		static Color colorPassed;
+		static Color colorFailed;
 		Color colorBroken;
 	public:
 		StateList();

@@ -5,7 +5,7 @@
 LED_CONTROLLER_NAMESPACE_USING
 
 LedStrip::LedStrip(int dataPin, int clockPin)
-	: this->dataPin(dataPin), this->clockPin(clockPin) { }
+	: dataPin(dataPin), clockPin(clockPin) { }
 
 void LedStrip::setup() {
 	pinMode(dataPin, OUTPUT);

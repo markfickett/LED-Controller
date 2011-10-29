@@ -1,8 +1,13 @@
 #include "StateList.h"
 
+#include "WProgram.h"
+
 LED_CONTROLLER_NAMESPACE_USING
 
 #define BROKEN_BLINK_INTERVAL	1000
+
+Color StateList::colorPassed(0x00FF00);
+Color StateList::colorFailed(0xFF0000);
 
 StateList::StateList() : numKnownStates(0), blinkOn(false), statesChanged(true),
 	brokenBlinkInterval(BROKEN_BLINK_INTERVAL), colorBroken()
@@ -46,7 +51,7 @@ void StateList::parseStates(const char* stateString) {
 	}
 }
 
-void StateList::update() {
+bool StateList::update() {
 	bool updated = statesChanged;
 	statesChanged = false;
 	if (brokenBlinkInterval.update()) {
