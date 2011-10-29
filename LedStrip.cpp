@@ -4,7 +4,12 @@
 
 LED_CONTROLLER_NAMESPACE_USING
 
-LedStrip::LedStrip() {
+LedStrip::LedStrip(int dataPin, int clockPin)
+	: this->dataPin(dataPin), this->clockPin(clockPin) { }
+
+void LedStrip::setup() {
+	pinMode(dataPin, OUTPUT);
+	pinMode(clockPin, OUTPUT);
 }
 
 void LedStrip::clear() {
@@ -13,7 +18,7 @@ void LedStrip::clear() {
 	}
 }
 
-void LedStrip::send(int dataPin, int clockPin) {
+void LedStrip::send() {
 	for(int i = 0; i < STRIP_LENGTH; i++) {
 		colors[i].send(dataPin, clockPin);
 	}

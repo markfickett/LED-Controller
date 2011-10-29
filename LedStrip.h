@@ -14,9 +14,14 @@ LED_CONTROLLER_NAMESPACE_ENTER
 class LedStrip {
 	private:
 		Color colors[STRIP_LENGTH];
+		int dataPin;
+		int clockPin;
 
 	public:
-		LedStrip();
+		LedStrip(int dataPin, int clockPin);
+
+		/** Set the pin modes. */
+		void setup();
 
 		/** Clear all the Colors. */
 		void clear();
@@ -29,7 +34,7 @@ class LedStrip {
 		 * 500 microseconds, causing the WS2081 ICs to switch from
 		 * passing values along to showing colors.
 		 */
-		void send(int dataPin, int clockPin);
+		void send();
 
 		/**
 		 * Get the internal color array, so others can adjust it.
