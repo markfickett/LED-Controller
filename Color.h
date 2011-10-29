@@ -39,6 +39,8 @@ class Color {
 		 */
 		Color(unsigned long combinedValue);
 
+		void setCombinedValue(unsigned long combinedValue);
+
 		/** Reset the Color to black. */
 		void clear();
 

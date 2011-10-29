@@ -12,6 +12,10 @@ Color::Color() {
 }
 
 Color::Color(unsigned long combinedValue) {
+	setCombinedValue(combinedValue);
+}
+
+void Color::setCombinedValue(unsigned long combinedValue) {
 	// This necessarily depends on specific implementation details.
 	color[0] = combinedValue >> (2*BITS_PER_CHANNEL);
 	color[1] = (combinedValue & 0x00FF00) >> (BITS_PER_CHANNEL);

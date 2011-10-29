@@ -13,6 +13,8 @@
 
 #include "Pattern.h"
 #include "PatternList.h"
-#include "RandomMarquee.h"
+
 #include "MovingPeak.h"
+#include "RandomMarquee.h"
+#include "StateList.h"
 
