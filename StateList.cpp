@@ -6,8 +6,8 @@ LED_CONTROLLER_NAMESPACE_USING
 
 #define BROKEN_BLINK_INTERVAL	1000
 
-Color StateList::colorPassed(0x00FF00);
-Color StateList::colorFailed(0xFF0000);
+Color StateList::colorPassed(0x004400);
+Color StateList::colorFailed(0x440000);
 
 StateList::StateList() : numKnownStates(0), blinkOn(false), statesChanged(true),
 	brokenBlinkInterval(BROKEN_BLINK_INTERVAL), colorBroken()
@@ -48,6 +48,7 @@ void StateList::parseStates(const char* stateString) {
 				return;
 		}
 		i++;
+		numKnownStates++;
 	}
 }
 
@@ -55,9 +56,10 @@ bool StateList::update() {
 	bool updated = statesChanged;
 	statesChanged = false;
 	if (brokenBlinkInterval.update()) {
+		brokenBlinkInterval.clearExpired();
 		updated = true;
 		blinkOn = !blinkOn;
-		colorBroken.setCombinedValue(blinkOn ? 0xFF0000 : 0x220000);
+		colorBroken.setCombinedValue(blinkOn ? 0x440000 : 0x110000);
 	}
 	return updated;
 }
