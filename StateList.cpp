@@ -44,7 +44,7 @@ void StateList::parseStates(const char* stateString) {
 				Serial.print(i);
 				Serial.print(" of state string \"");
 				Serial.print(stateString);
-				Serial.print("\", trauncating.");
+				Serial.println("\", trauncating.");
 				return;
 		}
 		i++;
