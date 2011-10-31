@@ -32,8 +32,11 @@ class StateList : public Pattern {
 		Color* stateColors[STRIP_LENGTH];
 
 		static Color colorPassed;
+		static Color colorPassedDim;
 		static Color colorFailed;
+		static Color colorFailedDim;
 		Color colorBroken;
+		Color colorBrokenDim;
 	public:
 		StateList();
 
