@@ -15,8 +15,7 @@ PatternList::PatternList() : pattern(NULL), next(NULL) {}
 void PatternList::insert(Pattern* pattern) {
 	PatternList* list = new PatternList(pattern);
 	if (list == NULL) {
-		Serial.print("!l");
-		Serial.flush();
+		Serial.println("!l");
 		return;
 	}
 	insert(list);
@@ -40,9 +39,6 @@ void PatternList::removeNext() {
 	next = oldNext->next;
 	oldNext->next = NULL;
 	delete oldNext;
-
-	Serial.print("x");
-	Serial.flush();
 }
 
 bool PatternList::update() {
