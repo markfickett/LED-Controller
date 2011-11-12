@@ -14,11 +14,12 @@ LED_CONTROLLER_NAMESPACE_ENTER
 class LedStrip {
 	private:
 		Color colors[STRIP_LENGTH];
-		int dataPin;
-		int clockPin;
+		const int dataPin;
+		const int clockPin;
+		const bool reverse;
 
 	public:
-		LedStrip(int dataPin, int clockPin);
+		LedStrip(int dataPin, int clockPin, bool reverse=false);
 
 		/** Set the pin modes. */
 		void setup();

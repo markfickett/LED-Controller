@@ -4,8 +4,8 @@
 
 LED_CONTROLLER_NAMESPACE_USING
 
-LedStrip::LedStrip(int dataPin, int clockPin)
-	: dataPin(dataPin), clockPin(clockPin) { }
+LedStrip::LedStrip(int dataPin, int clockPin, bool reverse)
+	: dataPin(dataPin), clockPin(clockPin), reverse(reverse) { }
 
 void LedStrip::setup() {
 	pinMode(dataPin, OUTPUT);
@@ -19,8 +19,14 @@ void LedStrip::clear() {
 }
 
 void LedStrip::send() {
-	for(int i = 0; i < STRIP_LENGTH; i++) {
-		colors[i].send(dataPin, clockPin);
+	if (reverse) {
+		for(int i = STRIP_LENGTH-1; i >= 0; i--) {
+			colors[i].send(dataPin, clockPin);
+		}
+	} else {
+		for(int i = 0; i < STRIP_LENGTH; i++) {
+			colors[i].send(dataPin, clockPin);
+		}
 	}
 
 	// Pull clock low to put strip into reset/post mode.
