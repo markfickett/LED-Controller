@@ -5,20 +5,19 @@
 LED_CONTROLLER_NAMESPACE_USING
 
 #define BROKEN_BLINK_INTERVAL	1000
-#define DIM_MOST		0.1
 
 Color StateList::colorPassed(0x00FF00);
-Color StateList::colorPassedDim = StateList::colorPassed.scaled(DIM_MOST);
 Color StateList::colorFailed(0xFF0000);
-Color StateList::colorFailedDim = StateList::colorFailed.scaled(DIM_MOST);
 
-StateList::StateList() : numKnownStates(0), blinkOn(false), statesChanged(true),
+StateList::StateList() : numKnownStates(0), blinkOn(false), colorsChanged(true),
 	brokenBlinkInterval(BROKEN_BLINK_INTERVAL),
-	colorBroken(), colorBrokenDim()
+	colorBroken(), colorBrokenDim(),
+	colorPassedDim(colorPassed), colorFailedDim(colorFailed),
+	historyScale(1.0)
 {}
 
 void StateList::parseStates(const char* stateString) {
-	statesChanged = true;
+	colorsChanged = true;
 	numKnownStates = 0;
 	int i = 0;
 	while(stateString[i] != '\0') {
@@ -60,15 +59,24 @@ void StateList::parseStates(const char* stateString) {
 	}
 }
 
+void StateList::setHistoryScale(float scale) {
+	if (scale != historyScale) {
+		colorsChanged = true;
+		historyScale = scale;
+		colorPassedDim = colorPassed.scaled(historyScale);
+		colorFailedDim = colorFailed.scaled(historyScale);
+	}
+}
+
 bool StateList::update() {
-	bool updated = statesChanged;
-	statesChanged = false;
+	bool updated = colorsChanged;
+	colorsChanged = false;
 	if (brokenBlinkInterval.update()) {
 		brokenBlinkInterval.clearExpired();
 		updated = true;
 		blinkOn = !blinkOn;
 		colorBroken.setCombinedValue(blinkOn ? 0xFF0000 : 0x440000);
-		colorBrokenDim = colorBroken.scaled(DIM_MOST);
+		colorBrokenDim = colorBroken.scaled(historyScale);
 	}
 	return updated;
 }

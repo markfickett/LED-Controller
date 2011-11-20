@@ -28,19 +28,27 @@ class StateList : public Pattern {
 		int numKnownStates;
 		bool blinkOn;
 		Interval brokenBlinkInterval;
-		bool statesChanged;
+		bool colorsChanged;
 		Color* stateColors[STRIP_LENGTH];
+		float historyScale;
 
 		static Color colorPassed;
-		static Color colorPassedDim;
+		Color colorPassedDim;
 		static Color colorFailed;
-		static Color colorFailedDim;
+		Color colorFailedDim;
 		Color colorBroken;
 		Color colorBrokenDim;
 	public:
 		StateList();
 
 		void parseStates(const char* stateString);
+
+		/**
+		 * Set the factor by which to scale all but the first (most
+		 * recent) state's colors. (Expected: dim all but the current
+		 * state.)
+		 */
+		void setHistoryScale(float scale);
 
 		bool update();
 		void apply(Color* stripColors);
