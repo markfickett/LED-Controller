@@ -26,6 +26,7 @@
  *		Red = SDI
  */
 
+#include <newanddelete.h> // pre-include for LED Controller library
 #include <ledcontroller.h>
 
 using LedController::Color;
@@ -37,19 +38,18 @@ using LedController::RandomMarquee;
 #define PIN_STATUS_LED 13	// On board LED
 
 RandomMarquee marquee = RandomMarquee();
-LedStrip ledStrip = LedStrip();
+LedStrip ledStrip = LedStrip(PIN_SDI, PIN_CKI);
 
 void setup() {
-	pinMode(PIN_SDI, OUTPUT);
-	pinMode(PIN_CKI, OUTPUT);
 	pinMode(PIN_STATUS_LED, OUTPUT);
+	ledStrip.setup();
 
 	randomSeed(analogRead(0));
 
 	ledStrip.clear();
 	marquee.update();
 	marquee.apply(ledStrip.getColors());
-	ledStrip.send(PIN_SDI, PIN_CKI);
+	ledStrip.send();
 
 	delay(2000);
 }
@@ -58,7 +58,7 @@ void loop() {
 	if (marquee.update()) {
 		ledStrip.clear();
 		marquee.apply(ledStrip.getColors());
-		ledStrip.send(PIN_SDI, PIN_CKI);
+		ledStrip.send();
 	}
 }
 
