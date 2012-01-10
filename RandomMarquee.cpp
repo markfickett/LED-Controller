@@ -3,13 +3,29 @@
 #include "WProgram.h"
 
 #define DEFAULT_MOVE_INTERVAL   250
+#define DEFAULT_BRIGHT_INTERVAL	5
+#define DEFAULT_SCALE_BRIGHT	0.02
+#define DEFAULT_SCALE_DIM	0.01
 
 LED_CONTROLLER_NAMESPACE_USING
 
-RandomMarquee::RandomMarquee() : addColorInterval(DEFAULT_MOVE_INTERVAL) {
-	startIndex = 0;
+RandomMarquee::RandomMarquee() : addColorInterval(DEFAULT_MOVE_INTERVAL),
+	startIndex(0), brightInterval(DEFAULT_BRIGHT_INTERVAL),
+	scaleBright(DEFAULT_SCALE_BRIGHT), scaleDim(DEFAULT_SCALE_DIM)
+{
+	setStartColors();
+}
 
-	// Put some known values at the start of the marquee.
+RandomMarquee::RandomMarquee(int brightInterval,
+	float scaleBright, float scaleDim) :
+	addColorInterval(DEFAULT_MOVE_INTERVAL),
+	startIndex(0), brightInterval(brightInterval),
+	scaleBright(scaleBright), scaleDim(scaleDim)
+{
+	setStartColors();
+}
+
+void RandomMarquee::setStartColors() {
 	colors[0] = Color(0xFF0000); // bright Red
 	colors[1] = Color(0x00FF00); // bright Green
 	colors[2] = Color(0x0000FF); // bright Blue
@@ -23,8 +39,8 @@ bool RandomMarquee::update() {
 		advance();
 		colors[startIndex].setRandom();
 		// Dim the whole strip, make every fifth color brighter.
-		float scaleAmount = startIndex % 5 == 0 ?
-			0.02 : 0.01;
+		float scaleAmount = startIndex % brightInterval == 0 ?
+			scaleBright : scaleDim;
 		colors[startIndex] = colors[startIndex].scaled(scaleAmount);
 		return true;
 	} else {

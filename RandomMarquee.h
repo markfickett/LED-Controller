@@ -16,10 +16,27 @@ class RandomMarquee : public Pattern {
 		Color colors[STRIP_LENGTH];
 		Interval addColorInterval;
 		int startIndex;
+		const int brightInterval;
+		const float scaleBright, scaleDim;
 
 		void advance();
+
+		/**
+		 * Put some known colors at the beginning of the marquee.
+		 */
+		void setStartColors();
 	public:
 		RandomMarquee();
+
+		/**
+		 * @param brightInterval Make every nth color brighter.
+		 * @param scaleBright scale factor by which to adjust every
+		 *	nth (bright) color
+		 * @param scaleDim scale factor by which to adjust all but the
+		 *	nth (the dim) colors
+		 */
+		RandomMarquee(int brightInterval,
+			float scaleBright, float scaleDim);
 
 		/**
 		 * Every interval, shift all the Colors one along the strip
@@ -31,7 +48,7 @@ class RandomMarquee : public Pattern {
 		void apply(Color* stripColors);
 
 		/**
-		 * Set the interval between moves.
+		 * Set the millisecond interval between moves.
 		 */
 		void setInterval(int interval);
 };
