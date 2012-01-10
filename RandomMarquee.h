@@ -9,17 +9,27 @@
 LED_CONTROLLER_NAMESPACE_ENTER
 
 /**
- * A sequence of random Colors which marches along an LED strip.
+ * A sequence of random Colors which moves along an LED strip.
+ *
+ * The colors may have fractional positions (sub-pixel; anti-aliased), providing
+ * a smoother simulation of moving points of light.
  */
 class RandomMarquee : public Pattern {
 	private:
-		Color colors[STRIP_LENGTH];
+		Color colors[STRIP_LENGTH+1];
 		Interval addColorInterval;
 		int startIndex;
+		float startOffset;
+		const float increment;
 		const int brightInterval;
 		const float scaleBright, scaleDim;
 
-		void advance();
+		/**
+		 * @return whether (true) the advance resulted in a full-index
+		 *	advance, in which case a new color need be inserted), or
+		 *	(false) if it only changed sub-integer positions.
+		 */
+		bool advance();
 
 		/**
 		 * Put some known colors at the beginning of the marquee.
@@ -34,13 +44,15 @@ class RandomMarquee : public Pattern {
 		 *	nth (bright) color
 		 * @param scaleDim scale factor by which to adjust all but the
 		 *	nth (the dim) colors
+		 * @param increment When advancing the color positions, move
+		 *	by this amount, in (0, 1.0].
 		 */
 		RandomMarquee(int brightInterval,
-			float scaleBright, float scaleDim);
+			float scaleBright, float scaleDim, float increment);
 
 		/**
-		 * Every interval, shift all the Colors one along the strip
-		 * and add a new random Color at the beginning.
+		 * Every interval, shift all the Colors increment along
+		 * the strip and add a new random Color at the beginning.
 		 *
 		 * @return whether the marquee changed (moved)
 		 */
