@@ -2,11 +2,11 @@
 
 #include "WProgram.h"
 
-#define DEFAULT_MOVE_INTERVAL   255/8
+#define DEFAULT_MOVE_INTERVAL   10
 #define DEFAULT_BRIGHT_INTERVAL	5
-#define DEFAULT_SCALE_BRIGHT	0.02
-#define DEFAULT_SCALE_DIM	0.01
-#define DEFAULT_INCREMENT	1.0/8.0
+#define DEFAULT_SCALE_BRIGHT	1.0
+#define DEFAULT_SCALE_DIM	0.3
+#define DEFAULT_INCREMENT	1.0/8
 #define MIN_INCREMENT		1e-2
 
 LED_CONTROLLER_NAMESPACE_USING
@@ -42,6 +42,9 @@ bool RandomMarquee::update() {
 		addColorInterval.clearExpired();
 		if (advance()) {
 			colors[startIndex].setRandom();
+			Serial.print("setRandom at ");
+			Serial.print(startIndex);
+			Serial.println();
 			// Dim the whole strip, make every fifth color brighter.
 			float scaleAmount = startIndex % brightInterval == 0 ?
 				scaleBright : scaleDim;
@@ -58,11 +61,11 @@ bool RandomMarquee::advance() {
 	startOffset -= increment;
 	if (startOffset < 0.0) {
 		startOffset += 1.0;
-		startIndex -= startIndex;
+		startIndex -= 1;
 		if (startIndex < 0) {
-			startIndex = STRIP_LENGTH - 1;
-			return true;
+			startIndex = BUFFER_LENGTH - 1;
 		}
+		return true;
 	}
 	return false;
 }
@@ -72,16 +75,18 @@ void RandomMarquee::setInterval(int interval) {
 }
 
 void RandomMarquee::apply(Color* stripColors) {
-	int i = 0;
-	for(int sourceIndex = startIndex; sourceIndex < STRIP_LENGTH;
-		i++, sourceIndex++)
-	{
-		stripColors[i].add(colors[sourceIndex].scaled(1.0-startOffset));
-		stripColors[i+1].add(colors[sourceIndex].scaled(startOffset));
-	}
-	for(int sourceIndex = 0; i < STRIP_LENGTH; i++, sourceIndex++) {
-		stripColors[i].add(colors[sourceIndex].scaled(1.0-startOffset));
-		stripColors[i+1].add(colors[sourceIndex].scaled(startOffset));
+	int outputIndex = 0;
+	int sourceIndex = startIndex + 1;
+	while(outputIndex < STRIP_LENGTH) {
+		stripColors[outputIndex].add(
+			colors[sourceIndex-1].scaled(1.0 - startOffset));
+		if (sourceIndex >= BUFFER_LENGTH) {
+			sourceIndex = 0;
+		}
+		stripColors[outputIndex].add(
+			colors[sourceIndex].scaled(startOffset));
+		outputIndex++;
+		sourceIndex++;
 	}
 }
 

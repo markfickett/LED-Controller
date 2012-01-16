@@ -8,6 +8,8 @@
 
 LED_CONTROLLER_NAMESPACE_ENTER
 
+#define BUFFER_LENGTH	STRIP_LENGTH+1
+
 /**
  * A sequence of random Colors which moves along an LED strip.
  *
