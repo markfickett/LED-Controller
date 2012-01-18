@@ -1,7 +1,7 @@
 LED Controller
 ==============
 
-Arduino library to control an addressable RGB LED strip (specifically, [this one from SparkFun](http://www.sparkfun.com/products/10312). Its primary aim is to provide a high-level interface, so the program writer can easily express things like 'I want a blue dot bouncing back and forth' or 'I want to add an orange cast to the whole strip'.
+Arduino library to control an addressable RGB LED strip (specifically, [this one from SparkFun](http://www.sparkfun.com/products/10312)). Its primary aim is to provide a high-level interface, so the program writer can easily express things like 'I want a blue dot bouncing back and forth' or 'I want to add an orange cast to the whole strip'.
 
 Example
 -------
@@ -38,4 +38,5 @@ See Also
 --------
 
 [fastspi](http://code.google.com/p/fastspi/) explicitly targets performance, as well as supporting multiple LED controller chipsets.
+Using the library: a [continuous-integration build status light](http://www.markfickett.com/stuff/artPage.php?id=377), housing an LED strip in a plexiglass and paper enclosure.
 
