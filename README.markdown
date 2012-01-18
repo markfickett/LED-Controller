@@ -37,6 +37,6 @@ Sub-pixel rendering (simulating points of color that lie between LEDs) seem to r
 See Also
 --------
 
-[fastspi](http://code.google.com/p/fastspi/) explicitly targets performance, as well as supporting multiple LED controller chipsets.
-Using the library: a [continuous-integration build status light](http://www.markfickett.com/stuff/artPage.php?id=377), housing an LED strip in a plexiglass and paper enclosure.
+* [fastspi](http://code.google.com/p/fastspi/) explicitly targets performance, as well as supporting multiple LED controller chipsets.
+* Using the library: a [continuous-integration build status light](http://www.markfickett.com/stuff/artPage.php?id=377), housing an LED strip in a plexiglass and paper enclosure.
 
