@@ -39,7 +39,14 @@ class Color {
 		 */
 		Color(unsigned long combinedValue);
 
+		/**
+		 * Create a new Color with the given (r, g, b) values, each
+		 * channel given as a byte in [0x00, 0xFF].
+		 */
+		Color(byte r, byte g, byte b);
+
 		void setCombinedValue(unsigned long combinedValue);
+		void setChannelValues(byte r, byte g, byte b);
 
 		/** Reset the Color to black. */
 		void clear();

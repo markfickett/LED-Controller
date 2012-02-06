@@ -15,11 +15,21 @@ Color::Color(unsigned long combinedValue) {
 	setCombinedValue(combinedValue);
 }
 
+Color::Color(byte r, byte g, byte b) {
+	setChannelValues(r, g, b);
+}
+
 void Color::setCombinedValue(unsigned long combinedValue) {
 	// This necessarily depends on specific implementation details.
 	color[0] = combinedValue >> (2*BITS_PER_CHANNEL);
 	color[1] = (combinedValue & 0x00FF00) >> (BITS_PER_CHANNEL);
 	color[2] = combinedValue & 0x0000FF;
+}
+
+void Color::setChannelValues(byte r, byte g, byte b) {
+	color[0] = r;
+	color[1] = g;
+	color[2] = b;
 }
 
 void Color::clear() {
