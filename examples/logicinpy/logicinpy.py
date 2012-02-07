@@ -2,7 +2,7 @@
 Test generating colors in Python and sending them over Serial to the Arduino.
 """
 
-import sys, os, time, random
+import sys, os, time, random, math
 
 arduinoLibPath = os.path.abspath(
 	os.path.join(
@@ -20,18 +20,39 @@ TRIALS = 100
 
 SERIAL_DEVICE = '/dev/tty.usbmodemfa141'
 
-def ShiftAndAddRandom(colors):
-	colors.pop()
-	colors.insert(0,
-		(	random.randint(0x00, 0xFF),
-			random.randint(0x00, 0xFF),
-			random.randint(0x00, 0xFF))
-	)
+class ColorGenerator:
+	def __init__(self, numLeds):
+		self.__colorBytes = []
+		for i in xrange(numLeds):
+			self.__colorBytes.append([0x00,]*3)
+		self.__t = 0
+		self.__step = math.pi/50.0
 
+	def __makeRandom(self):
+		return (	random.randint(0x00, 0xFF),
+				random.randint(0x00, 0xFF),
+				random.randint(0x00, 0xFF),
+		)
+
+	def __nextInGradient(self):
+		self.__t += self.__step
+		return [
+			int(0xFF * (0.5*(1.0 + math.sin(self.__t + x))))
+			for x in (math.pi/2.0, 0.0, -math.pi/2.0)
+		]
+
+	def update(self):
+		self.__colorBytes.pop()
+		#self.__colorBytes.insert(0, self.__makeRandom())
+		self.__colorBytes.insert(0, self.__nextInGradient())
+		
+	def getColorBytes(self):
+		return self.__colorBytes
+		
 def PackColorsHalved(colors):
-	colorBytes = [0xFF,]*(3*(len(colors)/2))
 	upper = False
 	byteIndex = 0
+	colorBytes = [0xFF,]*(3*(len(colors)/2))
 	for color in colors:
 		#print 'packing', color
 		for channel in color:
@@ -49,24 +70,27 @@ def PackColorsHalved(colors):
 	return ''.join([chr(c) for c in colorBytes])
 
 def PackColors(colors):
+	#quantize = 0x10
+	quantize = 1
 	return ''.join(
 		[''.join(
-			[chr(c) for c in color]
+			[chr((c/quantize)*quantize) for c in color]
 		) for color in colors]
 	)
 
 if __name__ == '__main__':
 	dt = 0.0
-	colors = []
-	for i in xrange(NUM_LEDS):
-		colors.append([0x00,]*3)
+	colorGenerator = ColorGenerator(NUM_LEDS)
 	with DataSender.SerialGuard(SERIAL_DEVICE) as arduinoSerial:
 		DataSender.WaitForReady(arduinoSerial)
 		t = time.time()
-		for i in xrange(TRIALS):
-			ShiftAndAddRandom(colors)
-			colorBytes = PackColors(colors)
-			#colorBytes = PackColorsHalved(colors)
+		#for i in xrange(TRIALS):
+		while True:
+			colorGenerator.update()
+			colorBytes = PackColors(
+				colorGenerator.getColorBytes())
+			#colorBytes = PackColorsHalved(
+			#	colorGenerator.getColorBytes())
 			arduinoSerial.write(
 				DataSender.Format(COLORS=colorBytes))
 			arduinoSerial.flush() # wait
