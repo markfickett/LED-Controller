@@ -2,18 +2,15 @@
 Test generating colors in Python and sending them over Serial to the Arduino.
 """
 
-import sys, os, time, random, math
-
+import os, sys
 arduinoLibPath = os.path.abspath(
 	os.path.join(
 		os.path.dirname(__file__),
-		'..', '..', '..',
-		'DataReceiver'))
+		'..', '..'))
 sys.path.append(arduinoLibPath)
 
-import DataSender
-
-NUM_LEDS = 32
+from Manifest import sys, time, random, math, DataSender
+from Manifest import STRIP_LENGTH
 
 DELAY = 0.013 # approx minimum delay for error-free receipt at 115200 baud
 TRIALS = 1000
@@ -87,7 +84,7 @@ def PackColors(colors):
 
 if __name__ == '__main__':
 	dt = 0.0
-	colorGenerator = ColorGenerator(NUM_LEDS)
+	colorGenerator = ColorGenerator(STRIP_LENGTH)
 	with DataSender.SerialGuard(SERIAL_DEVICE) as arduinoSerial:
 		DataSender.WaitForReady(arduinoSerial)
 		t = time.time()
@@ -128,7 +125,7 @@ Timing/reliability is affected by:
 		lower speed
 		huge increase in reliability
 Halving the transferred data:
-	NUM_LEDS 64 -> 32
+	STRIP_LENGTH 64 -> 32
 		19 Hz -> 36 Hz
 	Halving bits (pack into upper and lower 4 bits of each byte):
 		19 Hz -> 36 Hz
