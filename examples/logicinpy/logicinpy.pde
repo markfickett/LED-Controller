@@ -9,8 +9,8 @@
 using LedController::LedStrip;
 using LedController::Color;
 
-#define PIN_LED_DATA	51	// red wire
-#define PIN_LED_CLOCK	49	// green wire
+#define PIN_LED_DATA	2	// red wire
+#define PIN_LED_CLOCK	3	// green wire
 #define PIN_STATUS_LED	13	// on-board
 
 DataReceiver<1> dataReceiver;
@@ -30,7 +30,7 @@ void unpackColorBytesHalved(size_t size, const char* colorBytes,
 		{
 			if (upper) {
 				channelBuffer[channel] = 0x10 *
-					((colorBytes[byteIndex] & 0x0F) >> 4);
+					((colorBytes[byteIndex] & 0xF0) >> 4);
 				upper = false;
 				byteIndex++;
 			} else {
@@ -55,8 +55,8 @@ void unpackColorBytes(size_t size, const char* colorBytes,
 
 void colorChangeCb(size_t size, const char* colorBytes) {
 	digitalWrite(PIN_STATUS_LED, HIGH);
-	unpackColorBytes(size, colorBytes, ledStrip.getColors());
-	//unpackColorBytesHalved(size, colorBytes, ledStrip.getColors());
+	//unpackColorBytes(size, colorBytes, ledStrip.getColors());
+	unpackColorBytesHalved(size, colorBytes, ledStrip.getColors());
 	ledStrip.send();
 	digitalWrite(PIN_STATUS_LED, LOW);
 }

@@ -16,7 +16,7 @@ import DataSender
 NUM_LEDS = 64
 
 DELAY = 0
-TRIALS = 100
+TRIALS = 1000
 
 SERIAL_DEVICE = '/dev/tty.usbmodemfa141'
 
@@ -26,7 +26,7 @@ class ColorGenerator:
 		for i in xrange(numLeds):
 			self.__colorBytes.append([0x00,]*3)
 		self.__t = 0
-		self.__step = math.pi/50.0
+		self.__step = math.pi/25
 
 	def __makeRandom(self):
 		return (	random.randint(0x00, 0xFF),
@@ -54,27 +54,27 @@ def PackColorsHalved(colors):
 	byteIndex = 0
 	colorBytes = [0xFF,]*(3*(len(colors)/2))
 	for color in colors:
-		#print 'packing', color
+		#print 'packing (0x%02X, 0x%02X, 0x%02X)' % tuple(color)
 		for channel in color:
 			if upper:
-				#print '\tpack', channel, 'upper'
+				#print '\tpack 0x%02X upper' % channel
 				colorBytes[byteIndex] |= channel/0x10 << 4
-				#print '\tpacked into', colorBytes[byteIndex]
+				#print ('\tpacked into 0x%02X'
+				#	% colorBytes[byteIndex])
 				upper = False
 				byteIndex += 1
 			else:
-				#print '\tpack', channel, 'lower'
+				#print '\tpack 0x%02X lower' % channel
 				colorBytes[byteIndex] = channel/0x10
-				#print '\tpacked into', colorBytes[byteIndex]
+				#print ('\tpacked into 0x%02X'
+				#	% colorBytes[byteIndex])
 				upper = True
 	return ''.join([chr(c) for c in colorBytes])
 
 def PackColors(colors):
-	#quantize = 0x10
-	quantize = 1
 	return ''.join(
 		[''.join(
-			[chr((c/quantize)*quantize) for c in color]
+			[chr(c) for c in color]
 		) for color in colors]
 	)
 
@@ -84,13 +84,12 @@ if __name__ == '__main__':
 	with DataSender.SerialGuard(SERIAL_DEVICE) as arduinoSerial:
 		DataSender.WaitForReady(arduinoSerial)
 		t = time.time()
-		#for i in xrange(TRIALS):
-		while True:
+		for i in xrange(TRIALS):
 			colorGenerator.update()
-			colorBytes = PackColors(
-				colorGenerator.getColorBytes())
-			#colorBytes = PackColorsHalved(
+			#colorBytes = PackColors(
 			#	colorGenerator.getColorBytes())
+			colorBytes = PackColorsHalved(
+				colorGenerator.getColorBytes())
 			arduinoSerial.write(
 				DataSender.Format(COLORS=colorBytes))
 			arduinoSerial.flush() # wait
