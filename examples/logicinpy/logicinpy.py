@@ -11,6 +11,7 @@ sys.path.append(arduinoLibPath)
 
 from Manifest import sys, time, random, math, DataSender
 from Manifest import STRIP_LENGTH, HALF_PRECISION
+from Manifest import Color
 
 DELAY = 0.013 # approx minimum delay for error-free receipt at 115200 baud
 TRIALS = 1000
@@ -19,47 +20,41 @@ SERIAL_DEVICE = '/dev/tty.usbmodemfa141'
 
 class ColorGenerator:
 	def __init__(self, numLeds):
-		self.__colorBytes = []
+		self.__colors = []
 		for i in xrange(numLeds):
-			self.__colorBytes.append([0x00,]*3)
+			self.__colors.append(Color())
 		#self.__setCym()
 		self.__t = 0
 		self.__step = math.pi/25
 
 	def __setCym(self):
-		self.__colorBytes[0] = [0xFF, 0xFF, 0x00]
-		self.__colorBytes[2] = [0x00, 0xFF, 0xFF]
-		self.__colorBytes[1] = [0xFF, 0x00, 0xFF]
-
-	def __makeRandom(self):
-		return (	random.randint(0x00, 0xFF),
-				random.randint(0x00, 0xFF),
-				random.randint(0x00, 0xFF),
-		)
+		self.__colors[0] = Color(rgb=(1, 1, 0))
+		self.__colors[2] = Color(rgb=(0, 1, 1))
+		self.__colors[1] = Color(rgb=(1, 0, 1))
 
 	def __nextInGradient(self):
 		self.__t += self.__step
-		return [
-			int(0xFF * (0.5*(1.0 + math.sin(self.__t + x))))
+		return Color(rgb=[
+			(0.5*(1.0 + math.sin(self.__t + x)))
 			for x in (math.pi/2.0, 0.0, -math.pi/2.0)
-		]
+		])
 
 	def update(self):
-		#self.__colorBytes.insert(0, self.__colorBytes.pop())
-		self.__colorBytes.pop()
-		#self.__colorBytes.insert(0, self.__makeRandom())
-		self.__colorBytes.insert(0, self.__nextInGradient())
+		#self.__colors.insert(0, self.__colorBytes.pop())
+		self.__colors.pop()
+		#self.__colors.insert(0, Color.CreateRandom())
+		self.__colors.insert(0, self.__nextInGradient())
 		
-	def getColorBytes(self):
-		return self.__colorBytes
+	def getColors(self):
+		return self.__colors
 		
 def PackColorsHalved(colors):
 	upper = False
 	byteIndex = 0
 	colorBytes = [0xFF,]*(3*int(math.ceil(len(colors)/2.0)))
 	for color in colors:
-		#print 'packing (0x%02X, 0x%02X, 0x%02X)' % tuple(color)
-		for channel in color:
+		#print 'packing (0x%02X, 0x%02X, 0x%02X)' % color.getRgbBytes()
+		for channel in color.getRgbBytes():
 			if upper:
 				#print '\tpack 0x%02X upper' % channel
 				colorBytes[byteIndex] |= channel/0x10 << 4
@@ -78,7 +73,7 @@ def PackColorsHalved(colors):
 def PackColors(colors):
 	return ''.join(
 		[''.join(
-			[chr(c) for c in color]
+			[chr(c) for c in color.getRgbBytes()]
 		) for color in colors]
 	)
 
@@ -92,10 +87,10 @@ if __name__ == '__main__':
 			colorGenerator.update()
 			if HALF_PRECISION:
 				colorBytes = PackColorsHalved(
-					colorGenerator.getColorBytes())
+					colorGenerator.getColors())
 			else:
 				colorBytes = PackColors(
-					colorGenerator.getColorBytes())
+					colorGenerator.getColors())
 			arduinoSerial.write(
 				DataSender.Format(COLORS=colorBytes))
 			arduinoSerial.flush() # wait
