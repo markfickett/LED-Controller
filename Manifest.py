@@ -29,3 +29,5 @@ STRIP_LENGTH = sharedValues[STRIP_LENGTH_NAME]
 HALF_PRECISION = sharedValues.get(HALF_PRECISION_NAME, False)
 
 from Color import Color
+import Serialization
+

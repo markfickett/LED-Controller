@@ -10,8 +10,8 @@ arduinoLibPath = os.path.abspath(
 sys.path.append(arduinoLibPath)
 
 from Manifest import sys, time, random, math, DataSender
-from Manifest import STRIP_LENGTH, HALF_PRECISION
-from Manifest import Color
+from Manifest import STRIP_LENGTH
+from Manifest import Color, Serialization
 
 DELAY = 0.013 # approx minimum delay for error-free receipt at 115200 baud
 TRIALS = 1000
@@ -48,35 +48,6 @@ class ColorGenerator:
 	def getColors(self):
 		return self.__colors
 		
-def PackColorsHalved(colors):
-	upper = False
-	byteIndex = 0
-	colorBytes = [0xFF,]*(3*int(math.ceil(len(colors)/2.0)))
-	for color in colors:
-		#print 'packing (0x%02X, 0x%02X, 0x%02X)' % color.getRgbBytes()
-		for channel in color.getRgbBytes():
-			if upper:
-				#print '\tpack 0x%02X upper' % channel
-				colorBytes[byteIndex] |= channel/0x10 << 4
-				#print ('\tpacked into 0x%02X'
-				#	% colorBytes[byteIndex])
-				upper = False
-				byteIndex += 1
-			else:
-				#print '\tpack 0x%02X lower' % channel
-				colorBytes[byteIndex] = channel/0x10
-				#print ('\tpacked into 0x%02X'
-				#	% colorBytes[byteIndex])
-				upper = True
-	return ''.join([chr(c) for c in colorBytes])
-
-def PackColors(colors):
-	return ''.join(
-		[''.join(
-			[chr(c) for c in color.getRgbBytes()]
-		) for color in colors]
-	)
-
 if __name__ == '__main__':
 	dt = 0.0
 	colorGenerator = ColorGenerator(STRIP_LENGTH)
@@ -85,12 +56,8 @@ if __name__ == '__main__':
 		t = time.time()
 		for i in xrange(TRIALS):
 			colorGenerator.update()
-			if HALF_PRECISION:
-				colorBytes = PackColorsHalved(
-					colorGenerator.getColors())
-			else:
-				colorBytes = PackColors(
-					colorGenerator.getColors())
+			colorBytes = Serialization.ToBytes(
+				colorGenerator.getColors())
 			arduinoSerial.write(
 				DataSender.Format(COLORS=colorBytes))
 			arduinoSerial.flush() # wait
