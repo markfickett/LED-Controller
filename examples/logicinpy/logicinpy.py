@@ -10,7 +10,7 @@ arduinoLibPath = os.path.abspath(
 sys.path.append(arduinoLibPath)
 
 from Manifest import sys, time, random, math, DataSender
-from Manifest import STRIP_LENGTH
+from Manifest import STRIP_LENGTH, HALF_PRECISION
 
 DELAY = 0.013 # approx minimum delay for error-free receipt at 115200 baud
 TRIALS = 1000
@@ -90,10 +90,12 @@ if __name__ == '__main__':
 		t = time.time()
 		for i in xrange(TRIALS):
 			colorGenerator.update()
-			#colorBytes = PackColors(
-			#	colorGenerator.getColorBytes())
-			colorBytes = PackColorsHalved(
-				colorGenerator.getColorBytes())
+			if HALF_PRECISION:
+				colorBytes = PackColorsHalved(
+					colorGenerator.getColorBytes())
+			else:
+				colorBytes = PackColors(
+					colorGenerator.getColorBytes())
 			arduinoSerial.write(
 				DataSender.Format(COLORS=colorBytes))
 			arduinoSerial.flush() # wait

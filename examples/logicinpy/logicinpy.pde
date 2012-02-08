@@ -16,7 +16,8 @@ using LedController::Color;
 DataReceiver<1> dataReceiver;
 LedStrip ledStrip = LedStrip(PIN_LED_DATA, PIN_LED_CLOCK);
 
-void unpackColorBytesHalved(size_t size, const char* colorBytes,
+#ifdef HALF_PRECISION
+void unpackColorBytes(size_t size, const char* colorBytes,
 	LedController::Color* colors)
 {
 	int byteIndex = 0;
@@ -43,7 +44,7 @@ void unpackColorBytesHalved(size_t size, const char* colorBytes,
 			channelBuffer[0], channelBuffer[1], channelBuffer[2]);
 	}
 }
-
+#else
 void unpackColorBytes(size_t size, const char* colorBytes,
 	LedController::Color* colors)
 {
@@ -52,11 +53,11 @@ void unpackColorBytes(size_t size, const char* colorBytes,
 			colorBytes[v], colorBytes[v + 1], colorBytes[v + 2]);
 	}
 }
+#endif
 
 void colorChangeCb(size_t size, const char* colorBytes) {
 	digitalWrite(PIN_STATUS_LED, HIGH);
-	//unpackColorBytes(size, colorBytes, ledStrip.getColors());
-	unpackColorBytesHalved(size, colorBytes, ledStrip.getColors());
+	unpackColorBytes(size, colorBytes, ledStrip.getColors());
 	ledStrip.send();
 	digitalWrite(PIN_STATUS_LED, LOW);
 }
