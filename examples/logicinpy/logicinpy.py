@@ -13,9 +13,9 @@ sys.path.append(arduinoLibPath)
 
 import DataSender
 
-NUM_LEDS = 64
+NUM_LEDS = 32
 
-DELAY = 0
+DELAY = 0.013 # approx minimum delay for error-free receipt at 115200 baud
 TRIALS = 1000
 
 SERIAL_DEVICE = '/dev/tty.usbmodemfa141'
@@ -25,8 +25,14 @@ class ColorGenerator:
 		self.__colorBytes = []
 		for i in xrange(numLeds):
 			self.__colorBytes.append([0x00,]*3)
+		#self.__setCym()
 		self.__t = 0
 		self.__step = math.pi/25
+
+	def __setCym(self):
+		self.__colorBytes[0] = [0xFF, 0xFF, 0x00]
+		self.__colorBytes[2] = [0x00, 0xFF, 0xFF]
+		self.__colorBytes[1] = [0xFF, 0x00, 0xFF]
 
 	def __makeRandom(self):
 		return (	random.randint(0x00, 0xFF),
@@ -42,6 +48,7 @@ class ColorGenerator:
 		]
 
 	def update(self):
+		#self.__colorBytes.insert(0, self.__colorBytes.pop())
 		self.__colorBytes.pop()
 		#self.__colorBytes.insert(0, self.__makeRandom())
 		self.__colorBytes.insert(0, self.__nextInGradient())
@@ -52,7 +59,7 @@ class ColorGenerator:
 def PackColorsHalved(colors):
 	upper = False
 	byteIndex = 0
-	colorBytes = [0xFF,]*(3*(len(colors)/2))
+	colorBytes = [0xFF,]*(3*int(math.ceil(len(colors)/2.0)))
 	for color in colors:
 		#print 'packing (0x%02X, 0x%02X, 0x%02X)' % tuple(color)
 		for channel in color:
@@ -93,14 +100,15 @@ if __name__ == '__main__':
 			arduinoSerial.write(
 				DataSender.Format(COLORS=colorBytes))
 			arduinoSerial.flush() # wait
-			#time.sleep(DELAY)
-		dt = time.time() - t
-		print 'Buffered from Arduino:'
-		s = arduinoSerial.readline()
-		while s:
-			sys.stdout.write(s)
+
 			s = arduinoSerial.readline()
-		sys.stdout.flush()
+			while s:
+				sys.stdout.write(s)
+				s = arduinoSerial.readline()
+			sys.stdout.flush()
+
+			time.sleep(DELAY)
+		dt = time.time() - t
 	print 'Elapsed per %d: %.2f' % (TRIALS, dt)
 	print 'Updates per second: %.2f' % (TRIALS / dt)
 
