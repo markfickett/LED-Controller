@@ -10,57 +10,30 @@ arduinoLibPath = os.path.abspath(
 sys.path.append(arduinoLibPath)
 
 from Manifest import sys, time, random, math, DataSender
-from Manifest import STRIP_LENGTH
-from Manifest import Color, Serialization
+from Manifest import SendingBuffer, Sequences
 
-DELAY = 0.013 # approx minimum delay for error-free receipt at 115200 baud
 TRIALS = 1000
 
 SERIAL_DEVICE = '/dev/tty.usbmodemfa141'
 
-class ColorGenerator:
-	def __init__(self, numLeds):
-		self.__colors = []
-		for i in xrange(numLeds):
-			self.__colors.append(Color())
-		#self.__setCym()
-		self.__t = 0
-		self.__step = math.pi/25
-
-	def __setCym(self):
-		self.__colors[0] = Color(rgb=(1, 1, 0))
-		self.__colors[2] = Color(rgb=(0, 1, 1))
-		self.__colors[1] = Color(rgb=(1, 0, 1))
-
-	def __nextInGradient(self):
-		self.__t += self.__step
-		return Color(rgb=[
-			(0.5*(1.0 + math.sin(self.__t + x)))
-			for x in (math.pi/2.0, 0.0, -math.pi/2.0)
-		])
-
-	def update(self):
-		#self.__colors.insert(0, self.__colorBytes.pop())
-		self.__colors.pop()
-		#self.__colors.insert(0, Color.CreateRandom())
-		self.__colors.insert(0, self.__nextInGradient())
-		
-	def getColors(self):
-		return self.__colors
-		
 if __name__ == '__main__':
 	dt = 0.0
-	colorGenerator = ColorGenerator(STRIP_LENGTH)
+	colorSequence = Sequences.GenerateRandom(limit=TRIALS,
+		brightInterval=5)
+	#colorSequence = Sequences.GenerateHueGradient(limit=TRIALS)
+
 	with DataSender.SerialGuard(SERIAL_DEVICE) as arduinoSerial:
+		sendingColorBuffer = SendingBuffer(outputSerial=arduinoSerial)
+		for c in Sequences.GetSentinels():
+			sendingColorBuffer.pushAndPop(c)
+
 		DataSender.WaitForReady(arduinoSerial)
-		t = time.time()
-		for i in xrange(TRIALS):
-			colorGenerator.update()
-			colorBytes = Serialization.ToBytes(
-				colorGenerator.getColors())
-			arduinoSerial.write(
-				DataSender.Format(COLORS=colorBytes))
-			arduinoSerial.flush() # wait
+
+		for c in colorSequence:
+			t = time.time()
+
+			sendingColorBuffer.pushAndPop(c)
+			sendingColorBuffer.sendAndWait()
 
 			s = arduinoSerial.readline()
 			while s:
@@ -68,8 +41,7 @@ if __name__ == '__main__':
 				s = arduinoSerial.readline()
 			sys.stdout.flush()
 
-			time.sleep(DELAY)
-		dt = time.time() - t
+			dt += time.time() - t
 	print 'Elapsed per %d: %.2f' % (TRIALS, dt)
 	print 'Updates per second: %.2f' % (TRIALS / dt)
 
