@@ -1,5 +1,5 @@
 """
-Test generating colors in Python and sending them over Serial to the Arduino.
+Demo generating colors in Python and sending them over Serial to the Arduino.
 """
 
 import os, sys
@@ -45,24 +45,3 @@ if __name__ == '__main__':
 	print 'Elapsed per %d: %.2f' % (TRIALS, dt)
 	print 'Updates per second: %.2f' % (TRIALS / dt)
 
-"""
-Timing/reliability is affected by:
-	baud rate: main impact on timing
-		28800	14 Hz
-		38400	19 Hz
-		57600	29 Hz, unreliable
-	Python- or Arduino-side color processing, sending:
-		no observable impact on 3 100th Hz
-	Shortening key from COLORS to C or CL
-		only first trial is reliable
-		(but not by shortening to COL)
-		(but not by lengthening to COLORES)
-	calling .flush() after send
-		lower speed
-		huge increase in reliability
-Halving the transferred data:
-	STRIP_LENGTH 64 -> 32
-		19 Hz -> 36 Hz
-	Halving bits (pack into upper and lower 4 bits of each byte):
-		19 Hz -> 36 Hz
-"""
