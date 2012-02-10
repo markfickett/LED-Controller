@@ -20,18 +20,21 @@ class SendingBuffer(Buffer):
 	def setSerial(self, outputSerial):
 		self.__serial = outputSerial
 
-	def sendAndWait(self):
+	def sendAndWait(self, reverse=False):
 		"""
 		Send the current contents of the color buffer to the currently
 		set Serial, and wait for the send to complete to avoid read
 		errors on the receiving end with immediately repeated sends.
+		@param reversed if True, send Colors in reverse order
 		"""
 		if not self.__serial:
 			raise RuntimeError('Call setSerial (or provide in'
 				' constructor) before sending.')
+		colors = self.getColors()
+		if reverse:
+			colors = reversed(colors)
 		senderKwargs = {
-			DATA_RECEIVER_COLOR_KEY:
-				Serialization.ToBytes(self.getColors()),
+			DATA_RECEIVER_COLOR_KEY: Serialization.ToBytes(colors),
 		}
 		self.__serial.write(DataSender.Format(**senderKwargs))
 		self.__serial.flush()
