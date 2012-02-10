@@ -1,5 +1,8 @@
 /**
- * Test receiving colors over Serial and sending them to the LED strip.
+ * Demonstrate using DataReceiver to read color data from Serial, and using
+ * ColorPiper to transfer (pipe) that color data to the LED strip.
+ *
+ * See the .py file in this directory, which generates and sends colors.
  */
 
 #include <newanddelete.h>

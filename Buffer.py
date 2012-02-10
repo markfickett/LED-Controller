@@ -24,9 +24,9 @@ class Buffer:
 		"""
 		return self.__colors
 
-	def pushAndPop(self, color):
+	def insertAndPop(self, color):
 		"""
-		Push the given Color into the beginning (index 0) of the color
+		Insert the given Color into the beginning (index 0) of the color
 		list, and pop a Color from the end (maintaining size).
 		"""
 		self.__colors.insert(0, color)
