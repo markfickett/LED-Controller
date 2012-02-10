@@ -11,7 +11,13 @@ class Color:
 		if rgb:
 			self.setRgb(*rgb)
 		else:
-			self.setRgb(0, 0, 0)
+			self.clear()
+
+	def clear(self):
+		"""
+		Reset to the default black color.
+		"""
+		self.setRgb(0, 0, 0)
 
 	def setRgb(self, r, g, b):
 		"""
@@ -20,6 +26,12 @@ class Color:
 		self.__r = float(r)
 		self.__g = float(g)
 		self.__b = float(b)
+
+	def set(self, color):
+		"""
+		Set this Color to match another.
+		"""
+		self.setRgb(*color.getRgb())
 
 	def clamp(self):
 		"""

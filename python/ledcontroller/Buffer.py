@@ -24,6 +24,21 @@ class Buffer:
 		"""
 		return self.__colors
 
+	def clear(self):
+		"""
+		Reset all the colors to blank (black).
+		"""
+		for c in self.__colors:
+			c.clear()
+
+	def setFromBuffer(self, buffer):
+		"""
+		Set the contents of this buffer to match another buffer.
+		"""
+		for localColor, otherColor in zip(
+			self.__colors, buffer.getColors()):
+			localColor.set(otherColor)
+
 	def insertAndPop(self, color):
 		"""
 		Insert the given Color into the beginning (index 0) of the color
