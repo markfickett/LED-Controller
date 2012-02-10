@@ -2,15 +2,16 @@
 Centralize imports for the LED Controller library.
 """
 
-SHARED_FILE_NAME = 'Config.h' # relative to this file
-
 import sys, os, time
 import random, math
+
+SHARED_FILE_NAME = os.path.join('..', '..', 'Config.h') # relative to this file
 
 # Adjust path and import DataSender.
 DATA_RECEIVER_URL = 'https://github.com/markfickett/DataReceiver'
 dataReceiverPath = os.path.abspath(
-	os.path.join(os.path.dirname(__file__), '..', 'DataReceiver'))
+	os.path.join(os.path.dirname(__file__),
+	'..', '..', '..', 'DataReceiver'))
 sys.path.append(dataReceiverPath)
 try:
 	import DataSender

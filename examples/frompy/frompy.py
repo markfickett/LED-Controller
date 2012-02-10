@@ -6,11 +6,11 @@ over Serial to the Arduino.
 # Set up paths to include the ledcontroller Python library.
 import os, sys
 ledControllerLibPath = os.path.abspath(
-	os.path.join(os.path.dirname(__file__), '..', '..'))
+	os.path.join(os.path.dirname(__file__), '..', '..', 'python'))
 sys.path.append(ledControllerLibPath)
 
-from Manifest import sys, time, random, math, DataSender
-from Manifest import SendingBuffer, Sequences
+from ledcontroller.Manifest import sys, time, random, math, DataSender
+from ledcontroller.Manifest import SendingBuffer, Sequences
 
 # Set how many times to update the pattern (insert one Color) and redisplay
 # on the LED strip; use None to continue forever.
