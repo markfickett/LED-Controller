@@ -18,9 +18,9 @@ SERIAL_DEVICE = '/dev/tty.usbmodemfa141'
 
 if __name__ == '__main__':
 	dt = 0.0
-	colorSequence = Sequences.GenerateRandom(limit=TRIALS,
-		brightInterval=5)
-	#colorSequence = Sequences.GenerateHueGradient(limit=TRIALS)
+	#colorSequence = Sequences.GenerateRandom(limit=TRIALS,
+	#	brightInterval=5)
+	colorSequence = Sequences.GenerateHueGradient(limit=TRIALS)
 
 	with DataSender.SerialGuard(SERIAL_DEVICE) as arduinoSerial:
 		sendingColorBuffer = SendingBuffer(outputSerial=arduinoSerial)

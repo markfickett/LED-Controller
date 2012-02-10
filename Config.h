@@ -8,3 +8,5 @@
 // If defined, use half-precision colors (4 bits per channel).
 //#define HALF_PRECISION
 
+// the string used (by default) as the DataReciver key for color data
+#define DATA_RECEIVER_COLOR_KEY "COLORS"

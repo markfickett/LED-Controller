@@ -11,9 +11,10 @@
 #include "Color.h"
 #include "LedStrip.h"
 
+#include "LedPiper.h"
+
 #include "Pattern.h"
 #include "PatternList.h"
-
 #include "MovingPeak.h"
 #include "RandomMarquee.h"
 #include "StateList.h"

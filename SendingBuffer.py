@@ -1,5 +1,5 @@
 from Manifest import Buffer
-from Manifest import DataSender, Serialization, time
+from Manifest import DataSender, Serialization, time, DATA_RECEIVER_COLOR_KEY
 
 # TODO(markfickett) Get an ack from DataSender? Have flush work?
 DELAY = 0.013 # approx minimum delay for error-free receipt at 115200 baud
@@ -29,9 +29,11 @@ class SendingBuffer(Buffer):
 		if not self.__serial:
 			raise RuntimeError('Call setSerial (or provide in'
 				' constructor) before sending.')
-		self.__serial.write(
-			DataSender.Format(
-				COLORS=Serialization.ToBytes(self.getColors())))
+		senderKwargs = {
+			DATA_RECEIVER_COLOR_KEY:
+				Serialization.ToBytes(self.getColors()),
+		}
+		self.__serial.write(DataSender.Format(**senderKwargs))
 		self.__serial.flush()
 		time.sleep(DELAY)
 
