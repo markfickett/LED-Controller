@@ -6,6 +6,8 @@ Arduino library to control an addressable RGB LED strip (specifically, [this one
 Example
 -------
 
+The library has a Python component which can be used to generate color data then sent to the C++ side on the Arduino (using [DataReceiver](https://github.com/markfickett/DataReceiver)); it can also be used entirely in C++. The examples directory contains demos for both approaches.
+
 	#include <ledcontroller.h>
 	Color orange(0xFF6600);
 	RandomMarquee marquee; // manages an array of colors
@@ -27,12 +29,10 @@ Example
 		}
 	}
 
-The examples directory contains runnable .pde example code.
-
 Limitations
 -----------
 
-Sub-pixel rendering (simulating points of color that lie between LEDs) seem to require too much computation for reasonably fast animation as the library is designed. Also, no optimization has been done for color computation (addition, lerping) or transmitting colors to the strip.
+Sub-pixel rendering on the Arduino in C++ (simulating points of color that lie between LEDs) seem to require too much computation for reasonably fast animation. Also, no optimization has been done for color computation (addition, lerping) or transmitting colors to the strip. However, color updates can be sent from Python at around 50 per second for a 32-LED strip.
 
 See Also
 --------
