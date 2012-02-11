@@ -36,3 +36,11 @@ import Serialization
 from Buffer import Buffer
 from SendingBuffer import SendingBuffer
 import Sequences
+
+try:
+	import turtle
+	from TurtleBuffer import TurtleBuffer
+except ImportError, e:
+	print ('LED Controller: Turtle Graphics unavailable'
+		' for local LED simulation.')
+
