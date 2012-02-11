@@ -1,6 +1,6 @@
 """
 Demonstrate generating colors in Python and using DataSender to transfer them
-over Serial to the Arduino.
+over Serial to the Arduino. (Optionally simulate entirely in Python.)
 """
 
 # Set how many times to update the pattern (insert one Color) and redisplay
