@@ -4,6 +4,7 @@ class Pattern:
 	"""
 	def __init__(self):
 		self.__changed = True
+		self.__expired = False
 
 	def apply(self, colorBuffer):
 		"""
@@ -26,4 +27,13 @@ class Pattern:
 
 	def _clearChanged(self):
 		self.__changed = False
+
+	def isExpired(self):
+		"""
+		@return True if calls to apply will never again have an effect
+		"""
+		return self.__expired
+
+	def _expire(self):
+		self.__expired = True
 
