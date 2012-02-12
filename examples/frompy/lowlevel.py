@@ -1,6 +1,8 @@
 """
 Demonstrate generating colors in Python and using DataSender to transfer them
 over Serial to the Arduino. (Optionally simulate entirely in Python.)
+
+Low-level version, using fewer layers of abstraction (and convenience).
 """
 
 # Set how many times to update the pattern (insert one Color) and redisplay
@@ -12,20 +14,16 @@ TRIALS = 1000
 DUMMY_SERIAL = False
 DRAW = False
 
-# Set up paths to include the ledcontroller Python library.
-import os, sys
-ledControllerLibPath = os.path.abspath(
-	os.path.join(os.path.dirname(__file__), '..', '..', 'python'))
-sys.path.append(ledControllerLibPath)
-
-from ledcontroller.Manifest import sys, time, random, math, DataSender
-from ledcontroller.Manifest import SendingBuffer, Sequences
-from ledcontroller.Manifest import TurtleBuffer
-
 # Change this to match your Serial device. The correct value will be in the
 # Arduino app's Tools > Serial Device menu. See directions for picking your
 # serial device under "Uploading" at http://arduino.cc/en/Guide/Environment .
 SERIAL_DEVICE = '/dev/tty.usbmodemfa141'
+
+from Manifest import ledcontroller, PrintResponsesFromArduino
+
+from ledcontroller.Manifest import sys, time, random, math, DataSender
+from ledcontroller.Manifest import SendingBuffer, Sequences
+from ledcontroller.Manifest import TurtleBuffer
 
 if __name__ == '__main__':
 	dt = 0.0
@@ -74,13 +72,7 @@ if __name__ == '__main__':
 			# sending too fast).
 			sendingColorBuffer.sendAndWait()
 
-			# Print any response from the Arduino. (There might be
-			# an error message, in this example.)
-			s = arduinoSerial.readline()
-			while s:
-				sys.stdout.write(s)
-				s = arduinoSerial.readline()
-			sys.stdout.flush()
+			PrintResponsesFromArduino(arduinoSerial)
 
 			dt += time.time() - t
 
