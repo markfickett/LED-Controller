@@ -37,6 +37,8 @@ from Buffer import Buffer
 from SendingBuffer import SendingBuffer
 import Sequences
 from Pattern import Pattern
+from PatternList import PatternList
+from SendingPatternList import SendingPatternList
 from InterpolatedMarquee import InterpolatedMarquee
 
 try:
