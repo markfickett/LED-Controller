@@ -11,24 +11,24 @@ class Buffer:
 		"""
 		Initialize a list of default (black) Colors.
 		"""
-		self.__colors = []
+		self._colors = []
 		for i in xrange(size):
-			self.__colors.append(Color())
+			self._colors.append(Color())
 
 	def getSize(self):
-		return len(self.__colors)
+		return len(self._colors)
 
 	def getColors(self):
 		"""
 		@return the internal list of Colors, for modification.
 		"""
-		return self.__colors
+		return self._colors
 
 	def clear(self):
 		"""
 		Reset all the colors to blank (black).
 		"""
-		for c in self.__colors:
+		for c in self._colors:
 			c.clear()
 
 	def setFromBuffer(self, buffer):
@@ -36,7 +36,7 @@ class Buffer:
 		Set the contents of this buffer to match another buffer.
 		"""
 		for localColor, otherColor in zip(
-			self.__colors, buffer.getColors()):
+			self._colors, buffer.getColors()):
 			localColor.set(otherColor)
 
 	def insertAndPop(self, color):
@@ -44,6 +44,6 @@ class Buffer:
 		Insert the given Color into the beginning (index 0) of the color
 		list, and pop a Color from the end (maintaining size).
 		"""
-		self.__colors.insert(0, color)
-		return self.__colors.pop()
+		self._colors.insert(0, color)
+		return self._colors.pop()
 
