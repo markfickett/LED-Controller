@@ -1,4 +1,5 @@
-from Manifest import Pattern, Buffer, time, STRIP_LENGTH, Color
+from ledcontroller.Manifest import Buffer, time, STRIP_LENGTH, Color, patterns
+from Manifest import Pattern
 
 __all__ = [
 	'InterpolatedMarquee',

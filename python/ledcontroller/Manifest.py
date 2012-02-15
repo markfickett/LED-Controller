@@ -36,10 +36,8 @@ import Serialization
 from Buffer import Buffer
 from SendingBuffer import SendingBuffer
 import Sequences
-from Pattern import Pattern
-from PatternList import PatternList
+import patterns
 from SendingPatternList import SendingPatternList
-from InterpolatedMarquee import InterpolatedMarquee
 
 try:
 	import turtle

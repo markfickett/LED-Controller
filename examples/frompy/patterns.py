@@ -6,15 +6,15 @@ Use abstracting classes to manage lists of Patterns, and writing.
 """
 
 # Configuration options. See the low-level demo for details.
-DUMMY_SERIAL = False
-DRAW = False
+DUMMY_SERIAL = True
+DRAW = True
 SERIAL_DEVICE = '/dev/tty.usbmodemfa141'
 
 from Manifest import ledcontroller, PrintResponsesFromArduino
 
 from ledcontroller.Manifest import time, DataSender
-from ledcontroller.Manifest import SendingPatternList, \
-	TurtleBuffer, InterpolatedMarquee, Sequences, TurtleBuffer
+from ledcontroller.Manifest import SendingPatternList, TurtleBuffer, Sequences
+from ledcontroller.patterns.Manifest import InterpolatedMarquee
 
 if __name__ == '__main__':
 	# A SendingPatternList holds the list of Patterns (which create the

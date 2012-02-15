@@ -1,4 +1,5 @@
-from Manifest import PatternList, SendingBuffer
+from Manifest import SendingBuffer
+from patterns.Manifest import PatternList
 
 class SendingPatternList(PatternList):
 	"""
