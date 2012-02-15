@@ -13,8 +13,9 @@ SERIAL_DEVICE = '/dev/tty.usbmodemfa141'
 from Manifest import ledcontroller, PrintResponsesFromArduino
 
 from ledcontroller.Manifest import time, DataSender
-from ledcontroller.Manifest import SendingPatternList, TurtleBuffer, Sequences
-from ledcontroller.patterns.Manifest import InterpolatedMarquee
+from ledcontroller.Manifest import SendingPatternList, Color, \
+	TurtleBuffer, Sequences
+from ledcontroller.patterns.Manifest import InterpolatedMarquee, Pulser
 
 if __name__ == '__main__':
 	# A SendingPatternList holds the list of Patterns (which create the
@@ -26,11 +27,13 @@ if __name__ == '__main__':
 		sender = SendingPatternList(sendingBuffer=TurtleBuffer())
 
 	# Add some Patterns.
-	sender.append(InterpolatedMarquee(
-		Sequences.GenerateRandom(brightInterval=6),
-			speed=15))
+	#sender.append(InterpolatedMarquee(
+	#	Sequences.GenerateRandom(brightInterval=6),
+	#		speed=15))
 	sender.append(InterpolatedMarquee(
 		Sequences.GenerateHueGradient(repeatInterval=10)))
+	sender.append(Pulser(addDelay=0.75, moveDelay=0.05,
+		color=Color(rgb=(0, 0, 1)), width=2, reverse=True))
 
 	# Open the serial device (connection to the Arduino).
 	if DUMMY_SERIAL:
@@ -50,10 +53,10 @@ if __name__ == '__main__':
 		# If this does not happen, wait for control-C.
 		print 'Type ^C (hold control, press c) to stop.'
 		try:
-			while sender.updateAndSend():
-				actualTrials += 1
-
+			while True:
+				sender.updateAndSend()
 				PrintResponsesFromArduino(arduinoSerial)
+				actualTrials += 1
 		except KeyboardInterrupt:
 			print 'Got ^C, exiting.'
 
