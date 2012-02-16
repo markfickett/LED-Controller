@@ -39,6 +39,15 @@ class Buffer:
 			self._colors, buffer.getColors()):
 			localColor.set(otherColor)
 
+	def addBuffer(self, buffer):
+		"""
+		Add another buffer's colors to this'. Zip from index 0, and do
+		not affect or use colors past the end of the shorter buffer.
+		"""
+		for localColor, otherColor in zip(
+			self._colors, buffer.getColors()):
+			localColor.add(otherColor)
+
 	def insertAndPop(self, color):
 		"""
 		Insert the given Color into the beginning (index 0) of the color
