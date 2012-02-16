@@ -29,6 +29,7 @@ class TurtleBuffer(SendingBuffer):
 		Draw the current colors in Turtle Graphics. Also send to Serial.
 		"""
 		colors = self.getColors()
+		n = len(colors)
 		if reverse:
 			colors = reversed(colors)
 
@@ -42,10 +43,10 @@ class TurtleBuffer(SendingBuffer):
 			turtle.fd(self.__SCALE)
 			aveColor.add(c, clamp=False)
 		# Update the background. (Causes an update.)
-		turtle.bgcolor(*aveColor.scaled(0.4 * 1.0/len(colors)).getRgb())
+		turtle.bgcolor(*aveColor.scaled(0.4 * 1.0/n).getRgb())
 		# Retrace.
 		turtle.right(180)
-		turtle.fd(self.__SCALE*len(colors))
+		turtle.fd(self.__SCALE*n)
 		turtle.left(180)
 
 		SendingBuffer.sendAndWait(self, reverse=reverse)

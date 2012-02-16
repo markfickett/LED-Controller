@@ -6,12 +6,13 @@ class SendingPatternList(PatternList):
 	A PatternList which also has a SendingBuffer, simplifying managing a
 	strip which is to display only a set of Python-generated patterns.
 	"""
-	def __init__(self, sendingBuffer=None):
+	def __init__(self, sendingBuffer=None, reverse=False):
 		PatternList.__init__(self)
 		if sendingBuffer:
 			self.__sendingBuffer = sendingBuffer
 		else:
 			self.__sendingBuffer = SendingBuffer()
+		self.__reverse = reverse
 
 	def setSerial(self, outputSerial):
 		"""
@@ -28,7 +29,7 @@ class SendingPatternList(PatternList):
 		if self.isChanged():
 			self.__sendingBuffer.clear()
 			self.apply(self.__sendingBuffer)
-			self.__sendingBuffer.sendAndWait()
+			self.__sendingBuffer.sendAndWait(reverse=self.__reverse)
 			return True
 		else:
 			return False
