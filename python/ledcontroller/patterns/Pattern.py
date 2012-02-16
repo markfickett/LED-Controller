@@ -34,6 +34,6 @@ class Pattern:
 		"""
 		return self.__expired
 
-	def _expire(self):
+	def expire(self):
 		self.__expired = True
 
