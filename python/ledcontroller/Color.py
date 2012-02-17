@@ -73,6 +73,16 @@ class Color:
 		return [int(min(1, max(0, v)) * self.BYTE_MAX)
 			for v in self.getRgb()]
 
+	@staticmethod
+	def Lerp(x, a, b):
+		"""
+		@return the linear interpolation between Colors a and b,
+			where x=0 is a and x=1 is b.
+		"""
+		lerped = a.scaled(1.0-x)
+		lerped.add(b.scaled(x))
+		return lerped
+
 	@classmethod
 	def CreateRandom(cls):
 		return cls(rgb=(
