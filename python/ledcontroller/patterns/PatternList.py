@@ -16,6 +16,16 @@ class PatternList(Pattern):
 		"""
 		self.__patterns.append(pattern)
 
+	def remove(self, pattern, strict=True):
+		"""
+		Remove the given pattern from the list.
+		@param strict whether to match the default Python behavior, or
+			(if False) to silently do nothing if the pattern is not
+			already in the list
+		"""
+		if strict or (pattern in self.__patterns):
+			self.__patterns.remove(pattern)
+
 	def apply(self, colorBuffer):
 		for p in self.__patterns:
 			p.apply(colorBuffer)
