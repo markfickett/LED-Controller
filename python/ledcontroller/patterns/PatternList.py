@@ -40,6 +40,7 @@ class PatternList(Pattern):
 		for p in self.__patterns:
 			if p.isExpired():
 				expired.append(p)
+				changed = True
 			else:
 				changed |= p.isChanged()
 		for p in expired:
