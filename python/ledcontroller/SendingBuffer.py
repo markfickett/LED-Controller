@@ -1,9 +1,6 @@
 from Manifest import Buffer
 from Manifest import DataSender, Serialization, time, DATA_RECEIVER_COLOR_KEY
 
-# TODO(markfickett) Get an ack from DataSender? Have flush work?
-DELAY = 0.013 # approx minimum delay for error-free receipt at 115200 baud
-
 class SendingBuffer(Buffer):
 	"""
 	A Color buffer which also encapsulates logic for sending the Color
@@ -26,6 +23,8 @@ class SendingBuffer(Buffer):
 		set Serial, and wait for the send to complete to avoid read
 		errors on the receiving end with immediately repeated sends.
 		@param reversed if True, send Colors in reverse order
+		@return any Serial response read while waiting for
+			acknowledgement
 		"""
 		if not self.__serial:
 			raise RuntimeError('Call setSerial (or provide in'
@@ -36,7 +35,6 @@ class SendingBuffer(Buffer):
 		senderKwargs = {
 			DATA_RECEIVER_COLOR_KEY: Serialization.ToBytes(colors),
 		}
-		self.__serial.write(DataSender.Format(**senderKwargs))
-		self.__serial.flush()
-		time.sleep(DELAY)
+		output = DataSender.SendAndWait(self.__serial, **senderKwargs)
+		return output
 

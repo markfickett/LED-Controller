@@ -54,7 +54,11 @@ if __name__ == '__main__':
 		print 'Type ^C (hold control, press c) to stop.'
 		try:
 			while True:
-				sender.updateAndSend()
+				outputIfUpdated = sender.updateAndSend()
+				sys.stdout.write('.')
+				sys.stdout.flush()
+				if outputIfUpdated:
+					sys.stdout.write(outputIfUpdated)
 				PrintResponsesFromArduino(arduinoSerial)
 				actualTrials += 1
 		except KeyboardInterrupt:

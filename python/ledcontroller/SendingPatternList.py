@@ -24,13 +24,16 @@ class SendingPatternList(PatternList):
 		"""
 		If necessary: clear the sending buffer, apply all patterns to
 			it, and send.
-		@return whether any pattern was updated, triggering a send
+		@return if no update nor send was necessary: None; otherwise,
+			the (possibly empty) string read from Serial while
+			waiting for acknowledgement
 		"""
 		if self.isChanged():
 			self.__sendingBuffer.clear()
 			self.apply(self.__sendingBuffer)
-			self.__sendingBuffer.sendAndWait(reverse=self.__reverse)
-			return True
+			output = self.__sendingBuffer.sendAndWait(
+				reverse=self.__reverse)
+			return output
 		else:
-			return False
+			return None
 

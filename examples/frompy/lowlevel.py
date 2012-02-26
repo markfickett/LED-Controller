@@ -70,8 +70,11 @@ if __name__ == '__main__':
 			# Send the updated colors to the Arduino and wait for
 			# it to finish processing (to avoid dropped data by
 			# sending too fast).
-			sendingColorBuffer.sendAndWait()
-
+			immediateResponses = sendingColorBuffer.sendAndWait()
+			sys.stdout.write('.')
+			sys.stdout.flush()
+			if immediateResponses:
+				sys.stdout.write(immediateResponses)
 			PrintResponsesFromArduino(arduinoSerial)
 
 			dt += time.time() - t
