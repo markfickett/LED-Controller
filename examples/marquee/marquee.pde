@@ -26,7 +26,7 @@
  *		Red = SDI
  */
 
-#include <newanddelete.h> // pre-include for LED Controller library
+#include <newanddelete.h> // For Arduino before 1.0, new and delete operators.
 #include <ledcontroller.h>
 
 using LedController::Color;

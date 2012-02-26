@@ -1,6 +1,10 @@
 #include "Color.h"
 
+#if defined(ARDUINO) && ARDUINO >= 100
+#include "Arduino.h"
+#else
 #include "WProgram.h"
+#endif
 
 #define BITS_PER_CHANNEL	8
 #define CHANNEL_MAX		0xFF

@@ -1,8 +1,11 @@
 #include "PatternList.h"
 
-#include <newanddelete.h>
-
+#if defined(ARDUINO) && ARDUINO >= 100
+#include "Arduino.h"
+#else
 #include "WProgram.h"
+#include <newanddelete.h>
+#endif
 
 LED_CONTROLLER_NAMESPACE_USING
 
