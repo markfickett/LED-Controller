@@ -24,10 +24,9 @@ class TurtleBuffer(SendingBuffer):
 		turtle.tracer(0, 0) # no animation
 		turtle.setundobuffer(None) # no undo buffer
 
-	def sendAndWait(self, reverse=False):
+	def send(self, reverse=False):
 		"""
 		Draw the current colors in Turtle Graphics. Also send to Serial.
-		@return any Serial response read while waiting for ack
 		"""
 		colors = self.getColors()
 		n = len(colors)
@@ -50,6 +49,5 @@ class TurtleBuffer(SendingBuffer):
 		turtle.fd(self.__SCALE*n)
 		turtle.left(180)
 
-		output = SendingBuffer.sendAndWait(self, reverse=reverse)
-		return output
+		SendingBuffer.send(self, reverse=reverse)
 

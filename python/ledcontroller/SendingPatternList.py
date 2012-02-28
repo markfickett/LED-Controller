@@ -14,26 +14,24 @@ class SendingPatternList(PatternList):
 			self.__sendingBuffer = SendingBuffer()
 		self.__reverse = reverse
 
-	def setSerial(self, outputSerial):
+	def setSender(self, sender):
 		"""
-		Set the serial object used by the SendingBuffer.
+		Set the DataSender.Sender object used by the SendingBuffer.
 		"""
-		self.__sendingBuffer.setSerial(outputSerial)
+		self.__sendingBuffer.setSender(sender)
 
 	def  updateAndSend(self):
 		"""
 		If necessary: clear the sending buffer, apply all patterns to
 			it, and send.
-		@return if no update nor send was necessary: None; otherwise,
-			the (possibly empty) string read from Serial while
-			waiting for acknowledgement
+		@return whether an update (and send) was necessary
 		"""
 		if self.isChanged():
 			self.__sendingBuffer.clear()
 			self.apply(self.__sendingBuffer)
-			output = self.__sendingBuffer.sendAndWait(
+			self.__sendingBuffer.send(
 				reverse=self.__reverse)
-			return output
+			return True
 		else:
-			return None
+			return False
 

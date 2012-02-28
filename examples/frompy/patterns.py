@@ -10,7 +10,7 @@ DUMMY_SERIAL = True
 DRAW = True
 SERIAL_DEVICE = '/dev/tty.usbmodemfa141'
 
-from Manifest import ledcontroller, PrintResponsesFromArduino
+from Manifest import ledcontroller, sys
 
 from ledcontroller.Manifest import time, DataSender
 from ledcontroller.Manifest import SendingPatternList, Color, \
@@ -37,14 +37,12 @@ if __name__ == '__main__':
 
 	# Open the serial device (connection to the Arduino).
 	if DUMMY_SERIAL:
-		serialGuard = DataSender.DummySerialGuard(SERIAL_DEVICE,
-			silent=True)
+		dataSender = DataSender.DummySender(SERIAL_DEVICE, silent=True)
 	else:
-		serialGuard = DataSender.SerialGuard(SERIAL_DEVICE)
-	with serialGuard as arduinoSerial:
-		DataSender.WaitForReady(arduinoSerial)
+		dataSender = DataSender.Sender(SERIAL_DEVICE)
 
-		sender.setSerial(arduinoSerial)
+	with dataSender:
+		sender.setSender(dataSender)
 
 		t = time.time()
 		actualTrials = 0
@@ -54,12 +52,10 @@ if __name__ == '__main__':
 		print 'Type ^C (hold control, press c) to stop.'
 		try:
 			while True:
-				outputIfUpdated = sender.updateAndSend()
+				sender.updateAndSend()
 				sys.stdout.write('.')
 				sys.stdout.flush()
-				if outputIfUpdated:
-					sys.stdout.write(outputIfUpdated)
-				PrintResponsesFromArduino(arduinoSerial)
+				dataSender.readAndPrint()
 				actualTrials += 1
 		except KeyboardInterrupt:
 			print 'Got ^C, exiting.'

@@ -7,7 +7,7 @@ Low-level version, using fewer layers of abstraction (and convenience).
 
 # Set how many times to update the pattern (insert one Color) and redisplay
 # on the LED strip; use None to continue forever.
-TRIALS = 1000
+TRIALS = 100
 
 # Optionally use a dummy serial device and draw to the screen. (Drawing to the
 # screen does not prevent sending to the Arduino.)
@@ -19,7 +19,7 @@ DRAW = False
 # serial device under "Uploading" at http://arduino.cc/en/Guide/Environment .
 SERIAL_DEVICE = '/dev/tty.usbmodemfa141'
 
-from Manifest import ledcontroller, PrintResponsesFromArduino
+from Manifest import ledcontroller
 
 from ledcontroller.Manifest import sys, time, random, math, DataSender
 from ledcontroller.Manifest import SendingBuffer, Sequences
@@ -28,37 +28,32 @@ from ledcontroller.Manifest import TurtleBuffer
 if __name__ == '__main__':
 	dt = 0.0
 
-	# Use a predevined color sequence; either random colors, or a hue
+	# Use a predefined color sequence; either random colors, or a hue
 	# gradient. These are Python generators, yielding Color objects.
 	#colorSequence = Sequences.GenerateRandom(limit=TRIALS,
 	#	brightInterval=5)
 	colorSequence = Sequences.GenerateHueGradient(limit=TRIALS)
 
 	if DUMMY_SERIAL:
-		serialGuard = DataSender.DummySerialGuard(SERIAL_DEVICE,
+		sender = DataSender.DummySender(SERIAL_DEVICE,
 			silent=True)
 	else:
-		serialGuard = DataSender.SerialGuard(SERIAL_DEVICE)
+		sender = DataSender.Sender(SERIAL_DEVICE)
 	# Open the serial connection.
-	with serialGuard as arduinoSerial:
+	with sender:
 
 		# SendingBuffer has a list of Color objects and encapsulates
 		# requisite logic for generating bytes and sending.
 		# For simulating, TurtleBuffer subclasses SendingBuffer and
 		# draws to the screen using Turtle Graphics as well.
 		if DRAW:
-			sendingColorBuffer = TurtleBuffer(
-				outputSerial=arduinoSerial)
+			sendingColorBuffer = TurtleBuffer(sender=sender)
 		else:
-			sendingColorBuffer = SendingBuffer(
-				outputSerial=arduinoSerial)
+			sendingColorBuffer = SendingBuffer(sender=sender)
 
 		# Put some known colors at the beginning.
 		for c in Sequences.GetSentinels():
 			sendingColorBuffer.insertAndPop(c)
-
-		# Wait until the Arduino has finished setup() before sending.
-		DataSender.WaitForReady(arduinoSerial)
 
 		for c in colorSequence:
 			t = time.time()
@@ -67,15 +62,12 @@ if __name__ == '__main__':
 			# pop the oldest color from the other end).
 			sendingColorBuffer.insertAndPop(c)
 
-			# Send the updated colors to the Arduino and wait for
-			# it to finish processing (to avoid dropped data by
-			# sending too fast).
-			immediateResponses = sendingColorBuffer.sendAndWait()
+			# Send the updated colors to the Arduino.
+			sendingColorBuffer.send()
 			sys.stdout.write('.')
 			sys.stdout.flush()
-			if immediateResponses:
-				sys.stdout.write(immediateResponses)
-			PrintResponsesFromArduino(arduinoSerial)
+
+			sender.readAndPrint()
 
 			dt += time.time() - t
 
