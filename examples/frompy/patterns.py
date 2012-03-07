@@ -32,8 +32,7 @@ if __name__ == '__main__':
 	#		speed=15))
 	sender.append(InterpolatedMarquee(
 		Sequences.GenerateHueGradient(repeatInterval=10)))
-	sender.append(Pulser(addDelay=0.75, moveDelay=0.05,
-		color=Color(rgb=(0, 0, 1)), width=2, reverse=True))
+	sender.append(Pulser(color=Color(rgb=(0, 0, 1)), reverse=True))
 
 	# Open the serial device (connection to the Arduino).
 	if DUMMY_SERIAL:
