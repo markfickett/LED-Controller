@@ -5,10 +5,12 @@ over Serial to the Arduino. (Optionally simulate entirely in Python.)
 Use abstracting classes to manage lists of Patterns, and writing.
 """
 
-# Configuration options. See the low-level demo for details.
-DUMMY_SERIAL = True
-DRAW = True
+# Configuration options.
+DUMMY_SERIAL = False  # Do not write to serial (to the Arduino).
+DRAW = True  # Draw using turtle graphics (on screen) as well as to LEDs.
 SERIAL_DEVICE = '/dev/tty.usbmodemfa141'
+
+import traceback
 
 from Manifest import ledcontroller, sys
 
@@ -51,12 +53,13 @@ if __name__ == '__main__':
 		print 'Type ^C (hold control, press c) to stop.'
 		try:
 			while True:
-				sender.updateAndSend()
+				sender.updateAndSend()  # Uses dataSender to send the colors.
 				sys.stdout.write('.')
 				sys.stdout.flush()
-				dataSender.readAndPrint()
+				dataSender.readAndPrint()  # Reads any responses from the Arduino.
 				actualTrials += 1
 		except KeyboardInterrupt:
+			traceback.print_exc()
 			print 'Got ^C, exiting.'
 
 		dt = time.time() - t
