@@ -9,13 +9,8 @@ class InterpolatedMarquee(Pattern, Buffer):
   """
   Manage timed scrolling of a color sequence, and simulate sub-integer
   locations for that movement (sub-pixel smoothing, in effect).
-  @param color_sequence an iterable of Color objects, to be scrolled. When
-    the color_sequence runs out, the marquee will stop animating.
-  @param speed the number of positions (LEDs) to advance in one second.
-    For example, with a speed of 5, the first color from
-    color_sequence will move (smoothly) from the start of the LED
-    strip to the 5th LED.
-  Smoothness of animation is dependant on frequency of calls to apply.
+
+  Smoothness of animation is dependant on frequency of calls to Apply.
 
   TODO(markfickett) Apparent smoothness also depends on linearity of
   response of the LEDs; that is, how smoothly the perceived luminance
@@ -23,9 +18,17 @@ class InterpolatedMarquee(Pattern, Buffer):
   perceived animation.
   """
   def __init__(self, color_sequence, speed=1.0):
+    """
+    Args:
+      color_sequence an iterable of Color objects, to be scrolled. When
+          the color_sequence runs out, the marquee will stop animating.
+       speed the number of positions (LEDs) to advance in one second.
+          For example, with a speed of 5, the first color from
+          color_sequence will move (smoothly) from the start of the LED
+          strip to the 5th LED.
+    """
     if speed <= 0.0:
-      raise ValueError('Illegal speed %s must be > 0.'
-        % speed)
+      raise ValueError('Illegal speed %s must be > 0.' % speed)
     Pattern.__init__(self)
     Buffer.__init__(self, size=STRIP_LENGTH + 2)
     self.__seq = iter(color_sequence)

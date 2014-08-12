@@ -10,18 +10,19 @@ class PatternList(Pattern):
     self.__patterns = []
 
   def Append(self, pattern):
-    """
-    Add the given pattern to the list. Render order matches order of
-    addition. Patterns are automatically removed once expired.
+    """Adds the given pattern to the list.
+
+    Render order matches order of addition. Patterns are automatically removed
+    once expired.
     """
     self.__patterns.append(pattern)
 
   def Remove(self, pattern, strict=True):
-    """
-    Remove the given pattern from the list.
-    @param strict whether to match the default Python behavior, or
-      (if False) to silently do nothing if the pattern is not
-      already in the list
+    """Removes the given pattern from the list.
+
+    Args:
+      strict whether to match the default Python behavior, or (if False) to
+          silently do nothing if the pattern is not already in the list
     """
     if strict or (pattern in self.__patterns):
       self.__patterns.remove(pattern)
@@ -31,9 +32,9 @@ class PatternList(Pattern):
       p.Apply(colorBuffer)
 
   def IsChanged(self):
-    """
-    Return whether any pattern in the list has changed. Also do
-    garbage collection, removing expired patterns.
+    """Returns whether any pattern in the list has changed.
+
+    Also does garbage collection, removing expired patterns.
     """
     expired = []
     changed = False

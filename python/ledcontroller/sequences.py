@@ -13,8 +13,9 @@ from Manifest import Color, STRIP_LENGTH, math
 
 DEFAULT_DIM = 0.1
 def GetSentinels():
-  """
-  Get a list of known colors, for a familiar test pattern:
+  """Gets a list of known colors, for a familiar test pattern.
+
+  The colors are:
     cyan
     yellow
     magenta
@@ -31,12 +32,13 @@ def GenerateRandom(limit=None,
     bright_interval=None,
     scale_bright=1.0,
     scale_dim=DEFAULT_DIM):
-  """
-  Generate a sequence of random Colors.
-  @param limit the number of random Colors to generate; or None (default),
-    to continue forever
-  @param bright_interval If given, every bright_interval colors will be
-    scaled by scale_bright, and the rest scaled by scale_dim.
+  """Generates a sequence of random Colors.
+
+  Args:
+    limit the number of random Colors to generate; or None (default),
+        to continue forever
+    bright_interval If given, every bright_interval colors will be
+        scaled by scale_bright, and the rest scaled by scale_dim.
   """
   n = 0
   while (limit is None) or n < limit:
@@ -51,12 +53,13 @@ def GenerateRandom(limit=None,
 
 HUE_CHANNEL_OFFSETS = (math.pi/2.0, 0.0, -math.pi/2.0)
 def GenerateHueGradient(repeat_interval=STRIP_LENGTH, limit=None):
-  """
-  Generate a gradient through hues.
-  @param repeat_interval how many Colors before cycling back to the start,
-    defaulting to the STRIP_LENGTH shared constant
-  @param limit the number of Colors to generate; or None (default), to
-    continue forever
+  """Generates a gradient through hues.
+
+  Args:
+    repeat_interval how many Colors before cycling back to the start,
+        defaulting to the STRIP_LENGTH shared constant
+    limit the number of Colors to generate; or None (default), to
+        continue forever
   """
   n = 0
   t = 0.0

@@ -8,8 +8,9 @@ class SendingBuffer(Buffer):
   """
   def __init__(self, sender=None, **kwargs):
     """
-    @param output_serial the Serial output stream to be written to,
-      which may be set/replaced at any point using setSerial.
+    Args:
+      output_serial the Serial output stream to be written to,
+          which may be set/replaced at any point using SetSerial.
     """
     Buffer.__init__(self, **kwargs)
     self.__sender = sender
@@ -18,10 +19,13 @@ class SendingBuffer(Buffer):
     self.__sender = sender
 
   def Send(self, reverse=False):
-    """
-    Send the current contents of the color buffer using the current
-    data_sender.Sender, which manages structure and synchronization.
-    @param reversed if True, send Colors in reverse order
+    """Sends the current contents of the color buffer.
+
+    Uses the current data_sender.Sender, which manages structure and
+    synchronization.
+
+    Args:
+      reversed if True, sends Colors in reverse order
     """
     if not self.__sender:
       raise RuntimeError('Call setSender (or provide in'

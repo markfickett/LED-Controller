@@ -15,16 +15,14 @@ class SendingPatternList(PatternList):
     self.__reverse = reverse
 
   def SetSender(self, sender):
-    """
-    Set the data_sender.Sender object used by the SendingBuffer.
-    """
+    """Sets the data_sender.Sender object used by the SendingBuffer."""
     self.__sending_buffer.SetSender(sender)
 
   def  UpdateAndSend(self):
-    """
-    If necessary: clear the sending buffer, apply all patterns to
-      it, and send.
-    @return whether an update (and send) was necessary
+    """Lazily clears the sending buffer, applies all patterns to it, and sends.
+
+    Returns:
+      whether an update (and send) was necessary
     """
     if self.IsChanged():
       self.__sending_buffer.Clear()

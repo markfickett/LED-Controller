@@ -10,13 +10,15 @@ from Manifest import HALF_PRECISION
 from Manifest import math
 
 def ToBytes(colors):
-  """
-  Convert the given list of Colors to a string (byte array), suitable
-  for sending to the Arduino. This uses Color.GetRgbBytes, and then packs
-  those bytes into a string either directly or (if HALF_PRECISION is True)
-  alternately into the upper and lower 4 bits of each byte.
+  """Converts the given list of Colors to a string (byte array).
 
-  @return a string with color values packed into it
+  The byte array is suitable for sending to the Arduino. This uses
+  Color.GetRgbBytes, and then packs those bytes into a string either directly
+  or (if HALF_PRECISION is True) alternately into the upper and lower 4 bits of
+  each byte.
+
+  Returns:
+    a string with color values packed into it
   """
   if HALF_PRECISION:
     return ToBytesHalf(colors)

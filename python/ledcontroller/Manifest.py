@@ -1,6 +1,4 @@
-"""
-Centralize imports for the LED Controller library.
-"""
+"""Centralize imports for the LED Controller library."""
 
 import sys, os, time
 import random, math
@@ -43,6 +41,5 @@ try:
   import turtle
   from turtle_buffer import TurtleBuffer
 except ImportError, e:
-  print ('LED Controller: Turtle Graphics unavailable'
-    ' for local LED simulation.')
+  print 'LED Controller: Turtle Graphics unavailable for local LED simulation.'
 

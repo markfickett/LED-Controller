@@ -2,16 +2,17 @@ from Manifest import Pattern
 from ledcontroller.Manifest import Buffer, Color, time
 
 class Pulser(Pattern):
-  """
-  Send pulses of a color along the LED strip.
-  @param color the color of the center (maximally intense part) of a pulse
-  @param width the maximum number of LEDs affected by a pulse (diameter)
-  @param add_delay the number of seconds between new pulses
-  @param speed the number of LEDs down the strip a pulse travels / second
-  @param reverse If True, pulses travel in the opposite direction; by
-    default, the start from index 0.
-  """
+  """Send pulses of a color along the LED strip."""
   def __init__(self, add_delay=1.0, speed=14.0,
+    """
+    Args:
+      color the color of the center (maximally intense part) of a pulse
+      width the maximum number of LEDs affected by a pulse (diameter)
+      add_delay the number of seconds between new pulses
+      speed the number of LEDs down the strip a pulse travels / second
+      reverse If True, pulses travel in the opposite direction; by
+          default, the start from index 0.
+    """
       color=Color(rgb=(1,1,1)), width=6.0,
       reverse=False):
     Pattern.__init__(self)
@@ -51,9 +52,7 @@ class Pulser(Pattern):
       i += 1
 
   def Apply(self, color_buffer):
-    """
-    Recalculate pulse positions for the current time and add pulses.
-    """
+    """Recalculates pulse positions for the current time and add pulses."""
     Pattern.Apply(self, color_buffer)
     colors = color_buffer.GetColors()
     n = len(colors)

@@ -4,13 +4,11 @@ class TurtleBuffer(SendingBuffer):
   __SCALE = 10
   __DOT_SIZE = 8
   """
-  Simulate writing to the Arduino and LED strip using Turtle Graphics
+  Simulates writing to the Arduino and LED strip using Turtle Graphics
   on the local machine.
   """
   def __init__(self, **kwargs):
-    """
-    Initialize the Turtle Graphics canvas.
-    """
+    """Initializes the Turtle Graphics canvas."""
     SendingBuffer.__init__(self, **kwargs)
     turtle.colormode(1)
     turtle.screensize(canvwidth=self.__SCALE*(self.getSize()+2),
@@ -25,9 +23,7 @@ class TurtleBuffer(SendingBuffer):
     turtle.setundobuffer(None) # no undo buffer
 
   def Send(self, reverse=False):
-    """
-    Draw the current colors in Turtle Graphics. Also send to Serial.
-    """
+    """Draws the current colors in Turtle Graphics. Also sends to Serial."""
     colors = self.GetColors()
     n = len(colors)
     if reverse:
