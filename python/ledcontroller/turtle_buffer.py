@@ -24,16 +24,16 @@ class TurtleBuffer(SendingBuffer):
 		turtle.tracer(0, 0) # no animation
 		turtle.setundobuffer(None) # no undo buffer
 
-	def send(self, reverse=False):
+	def Send(self, reverse=False):
 		"""
 		Draw the current colors in Turtle Graphics. Also send to Serial.
 		"""
-		colors = self.getColors()
+		colors = self.GetColors()
 		n = len(colors)
 		if reverse:
 			colors = reversed(colors)
 
-		aveColor = Color()
+		ave_color = Color()
 
 		# Clear last time's drawings (dots).
 		turtle.clear()
@@ -41,13 +41,13 @@ class TurtleBuffer(SendingBuffer):
 		for c in colors:
 			turtle.dot(self.__DOT_SIZE, *c.getRgb())
 			turtle.fd(self.__SCALE)
-			aveColor.add(c, clamp=False)
+			ave_color.add(c, clamp=False)
 		# Update the background. (Causes an update.)
-		turtle.bgcolor(*aveColor.scaled(0.4 * 1.0/n).getRgb())
+		turtle.bgcolor(*ave_color.scaled(0.4 * 1.0/n).getRgb())
 		# Retrace.
 		turtle.right(180)
 		turtle.fd(self.__SCALE*n)
 		turtle.left(180)
 
-		SendingBuffer.send(self, reverse=reverse)
+		SendingBuffer.Send(self, reverse=reverse)
 

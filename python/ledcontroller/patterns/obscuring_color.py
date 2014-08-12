@@ -5,14 +5,14 @@ class ObscuringColor(Pattern):
 	def __init__(self, color, opacity=0.0):
 		Pattern.__init__(self)
 		self.__color = color
-		self.setOpacity(opacity)
+		self.SetOpacity(opacity)
 
-	def setOpacity(self, opacity):
-		self._setChanged()
+	def SetOpacity(self, opacity):
+		self._SetChanged()
 		self.__opacity = opacity
 
-	def apply(self, colorBuffer):
-		Pattern.apply(self, colorBuffer)
-		for c in colorBuffer.getColors():
+	def Apply(self, color_buffer):
+		Pattern.Apply(self, color_buffer)
+		for c in color_buffer.GetColors():
 			c.set(Color.Lerp(self.__opacity, c, self.__color))
 

@@ -6,30 +6,30 @@ class SendingPatternList(PatternList):
 	A PatternList which also has a SendingBuffer, simplifying managing a
 	strip which is to display only a set of Python-generated patterns.
 	"""
-	def __init__(self, sendingBuffer=None, reverse=False):
+	def __init__(self, sending_buffer=None, reverse=False):
 		PatternList.__init__(self)
-		if sendingBuffer:
-			self.__sendingBuffer = sendingBuffer
+		if sending_buffer:
+			self.__sending_buffer = sending_buffer
 		else:
-			self.__sendingBuffer = SendingBuffer()
+			self.__sending_buffer = SendingBuffer()
 		self.__reverse = reverse
 
-	def setSender(self, sender):
+	def SetSender(self, sender):
 		"""
 		Set the data_sender.Sender object used by the SendingBuffer.
 		"""
-		self.__sendingBuffer.setSender(sender)
+		self.__sending_buffer.SetSender(sender)
 
-	def  updateAndSend(self):
+	def  UpdateAndSend(self):
 		"""
 		If necessary: clear the sending buffer, apply all patterns to
 			it, and send.
 		@return whether an update (and send) was necessary
 		"""
-		if self.isChanged():
-			self.__sendingBuffer.clear()
-			self.apply(self.__sendingBuffer)
-			self.__sendingBuffer.send(
+		if self.IsChanged():
+			self.__sending_buffer.Clear()
+			self.Apply(self.__sending_buffer)
+			self.__sending_buffer.Send(
 				reverse=self.__reverse)
 			return True
 		else:

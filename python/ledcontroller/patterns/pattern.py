@@ -6,15 +6,15 @@ class Pattern:
 		self.__changed = True
 		self.__expired = False
 
-	def apply(self, colorBuffer):
+	def Apply(self, color_buffer):
 		"""
 		Usually, add the colors from the pattern to the given buffer.
 		Generally, modify the given color buffer according to this
 		pattern's current state.
 		"""
-		self._clearChanged()
+		self._ClearChanged()
 
-	def isChanged(self):
+	def IsChanged(self):
 		"""
 		@return whether this Pattern has changed since last rendered.
 			Specifically, whether a re-render is necessary on
@@ -22,18 +22,18 @@ class Pattern:
 		"""
 		return self.__changed
 
-	def _setChanged(self):
+	def _SetChanged(self):
 		self.__changed = True
 
-	def _clearChanged(self):
+	def _ClearChanged(self):
 		self.__changed = False
 
-	def isExpired(self):
+	def IsExpired(self):
 		"""
 		@return True if calls to apply will never again have an effect
 		"""
 		return self.__expired
 
-	def expire(self):
+	def Expire(self):
 		self.__expired = True
 
