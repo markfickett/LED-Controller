@@ -16,7 +16,7 @@ class SendingPatternList(PatternList):
 
 	def setSender(self, sender):
 		"""
-		Set the DataSender.Sender object used by the SendingBuffer.
+		Set the data_sender.Sender object used by the SendingBuffer.
 		"""
 		self.__sendingBuffer.setSender(sender)
 

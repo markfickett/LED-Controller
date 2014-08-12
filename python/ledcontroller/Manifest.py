@@ -7,14 +7,14 @@ import random, math
 
 SHARED_FILE_NAME = os.path.join('..', '..', 'Config.h') # relative to this file
 
-# Adjust path and import DataSender.
+# Adjust path and import data_sender.
 DATA_RECEIVER_URL = 'https://github.com/markfickett/DataReceiver'
 dataReceiverPath = os.path.abspath(
 	os.path.join(os.path.dirname(__file__),
 	'..', '..', '..', 'DataReceiver'))
 sys.path.append(dataReceiverPath)
 try:
-	import DataSender
+	import data_sender
 except ImportError, e:
 	raise ImportError('%s: expected in %s, available from %s'
 		% (e.message, dataReceiverPath, DATA_RECEIVER_URL))
@@ -25,23 +25,23 @@ HALF_PRECISION_NAME = 'HALF_PRECISION'
 DATA_RECEIVER_COLOR_KEY_NAME = 'DATA_RECEIVER_COLOR_KEY'
 sharedFilePath = os.path.join(os.path.dirname(__file__), SHARED_FILE_NAME)
 with open(sharedFilePath) as sharedFile:
-	sharedValues = DataSender.GetSharedValues(sharedFile,
+	sharedValues = data_sender.GetSharedValues(sharedFile,
 		typeConversionMap={STRIP_LENGTH_NAME: int})
 STRIP_LENGTH = sharedValues[STRIP_LENGTH_NAME]
 HALF_PRECISION = sharedValues.get(HALF_PRECISION_NAME, False)
 DATA_RECEIVER_COLOR_KEY = sharedValues[DATA_RECEIVER_COLOR_KEY_NAME].strip('"')
 
-from Color import Color
-import Serialization
-from Buffer import Buffer
-from SendingBuffer import SendingBuffer
-import Sequences
+from color import Color
+import serialization
+from buffer import Buffer
+from sending_buffer import SendingBuffer
+import sequences
 import patterns
-from SendingPatternList import SendingPatternList
+from sending_pattern_list import SendingPatternList
 
 try:
 	import turtle
-	from TurtleBuffer import TurtleBuffer
+	from turtle_buffer import TurtleBuffer
 except ImportError, e:
 	print ('LED Controller: Turtle Graphics unavailable'
 		' for local LED simulation.')

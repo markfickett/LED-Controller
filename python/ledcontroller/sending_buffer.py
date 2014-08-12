@@ -1,5 +1,5 @@
 from Manifest import Buffer
-from Manifest import DataSender, Serialization, time, DATA_RECEIVER_COLOR_KEY
+from Manifest import data_sender, serialization, time, DATA_RECEIVER_COLOR_KEY
 
 class SendingBuffer(Buffer):
 	"""
@@ -20,7 +20,7 @@ class SendingBuffer(Buffer):
 	def send(self, reverse=False):
 		"""
 		Send the current contents of the color buffer using the current
-		DataSender.Sender, which manages structure and synchronization.
+		data_sender.Sender, which manages structure and synchronization.
 		@param reversed if True, send Colors in reverse order
 		"""
 		if not self.__sender:
@@ -30,7 +30,7 @@ class SendingBuffer(Buffer):
 		if reverse:
 			colors = reversed(colors)
 		senderKwargs = {
-			DATA_RECEIVER_COLOR_KEY: Serialization.ToBytes(colors),
+			DATA_RECEIVER_COLOR_KEY: serialization.ToBytes(colors),
 		}
 		self.__sender.send(**senderKwargs)
 
