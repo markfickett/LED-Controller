@@ -6,7 +6,6 @@
  */
 
 
-#include <newanddelete.h> // For Arduino before 1.0, new and delete operators.
 #include <DataReceiver.h>
 #include <ledcontroller.h>
 
