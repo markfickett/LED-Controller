@@ -1,10 +1,6 @@
 #include "RandomMarquee.h"
 
-#if defined(ARDUINO) && ARDUINO >= 100
 #include "Arduino.h"
-#else
-#include "WProgram.h"
-#endif
 
 #define DEFAULT_MOVE_INTERVAL   250
 #define DEFAULT_BRIGHT_INTERVAL	5

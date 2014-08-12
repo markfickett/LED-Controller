@@ -1,10 +1,6 @@
 #include "Interval.h"
 
-#if defined(ARDUINO) && ARDUINO >= 100
 #include "Arduino.h"
-#else
-#include "WProgram.h"
-#endif
 
 #define MILLIS_MAX	~((unsigned long)0)
 

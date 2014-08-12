@@ -5,11 +5,7 @@
 #include "Color.h"
 #include "LedStrip.h"
 
-#if defined(ARDUINO) && ARDUINO >= 100
 #include "Arduino.h"
-#else
-#include "WProgram.h"
-#endif
 
 LED_CONTROLLER_NAMESPACE_ENTER
 
