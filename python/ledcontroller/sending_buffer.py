@@ -36,5 +36,5 @@ class SendingBuffer(Buffer):
     sender_kwargs = {
       DATA_RECEIVER_COLOR_KEY: serialization.ToBytes(colors),
     }
-    self.__sender.send(**sender_kwargs)
+    self.__sender.Send(**sender_kwargs)
 

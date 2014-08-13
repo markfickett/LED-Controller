@@ -4,6 +4,7 @@ from ledcontroller.Manifest import Buffer, Color, time
 class Pulser(Pattern):
   """Send pulses of a color along the LED strip."""
   def __init__(self, add_delay=1.0, speed=14.0,
+      color=Color(rgb=(1,1,1)), width=6.0, reverse=False):
     """
     Args:
       color the color of the center (maximally intense part) of a pulse
@@ -13,8 +14,6 @@ class Pulser(Pattern):
       reverse If True, pulses travel in the opposite direction; by
           default, the start from index 0.
     """
-      color=Color(rgb=(1,1,1)), width=6.0,
-      reverse=False):
     Pattern.__init__(self)
     if add_delay <= 0:
       raise ValueError('add_delay value %s is not > 0.'
