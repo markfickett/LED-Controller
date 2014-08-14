@@ -2,7 +2,7 @@
  * Demonstrate using DataReceiver to read color data from Serial, and using
  * Adafruit_NeoPixel to transfer that color data to a WS2812 LED strip.
  *
- * See the .py file in this directory, which generates and sends colors.
+ * To be used with ../frompy/*.py which generate and send colors.
  */
 
 
