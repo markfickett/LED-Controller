@@ -6,8 +6,11 @@ Use abstracting classes to manage lists of Patterns, and writing.
 """
 
 # Configuration options.
-DUMMY_SERIAL = False  # Do not write to serial (to the Arduino).
-DRAW = True  # Draw using turtle graphics (on screen) as well as to LEDs.
+# Do not write to serial (to the Arduino).
+DUMMY_SERIAL = False
+# Draw using turtle graphics (on screen) as well as to LEDs. Note that this
+# slows things down significantly.
+DRAW = False
 SERIAL_DEVICE = '/dev/tty.usbmodemfa141'
 
 import traceback
@@ -29,12 +32,14 @@ if __name__ == '__main__':
     sender = SendingPatternList(sending_buffer=TurtleBuffer())
 
   # Add some Patterns.
-  #sender.append(InterpolatedMarquee(
-  #  Sequences.GenerateRandom(bright_interval=6),
+  #sender.Append(InterpolatedMarquee(
+  #  sequences.GenerateRandom(bright_interval=6),
   #    speed=15))
-  sender.append(InterpolatedMarquee(
-    Sequences.GenerateHueGradient(repeat_interval=10)))
-  sender.append(Pulser(color=Color(rgb=(0, 0, 1)), reverse=True))
+  sender.Append(InterpolatedMarquee(
+    (c.Scaled(0.1) for c in
+     sequences.GenerateHueGradient(repeat_interval=50)),
+    speed=5.0))
+  sender.Append(Pulser(color=Color(rgb=(0, 0, 1)), reverse=True, add_delay=3.0))
 
   # Open the serial device (connection to the Arduino).
   if DUMMY_SERIAL:

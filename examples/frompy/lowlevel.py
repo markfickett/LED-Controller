@@ -10,7 +10,7 @@ Low-level version, using fewer layers of abstraction (and convenience).
 TRIALS = 100
 
 # Optionally use a dummy serial device and draw to the screen. (Drawing to the
-# screen does not prevent sending to the Arduino.)
+# screen does not prevent sending to the Arduino, but does slow things down.)
 DUMMY_SERIAL = False
 DRAW = False
 
