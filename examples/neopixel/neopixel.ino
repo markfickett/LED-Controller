@@ -7,6 +7,7 @@
 
 
 #include <DataReceiver.h>
+#include <Config.h>
 
 // https://github.com/adafruit/Adafruit_NeoPixel for
 // learn.sparkfun.com/tutorials/ws2812-breakout-hookup-guide
@@ -16,7 +17,7 @@
 
 DataReceiver<1> dataReceiver;
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(
-    120, PIN_LED_DATA, NEO_GRB + NEO_KHZ800);
+    STRIP_LENGTH, PIN_LED_DATA, NEO_GRB + NEO_KHZ800);
 
 
 /**
@@ -35,7 +36,7 @@ void setup() {
 	dataReceiver.setup();
 	strip.begin();
   strip.show();
-	dataReceiver.addKey("COLORS", &setColorsAndSend);
+	dataReceiver.addKey(DATA_RECEIVER_COLOR_KEY, &setColorsAndSend);
 	dataReceiver.sendReady();
 }
 
