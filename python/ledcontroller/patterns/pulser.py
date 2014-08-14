@@ -66,6 +66,6 @@ class Pulser(Pattern):
           continue
         dx = abs(center - i)
         f = min(1.0, dx / self.__radius)
-        colors[i] = colors[i].scaled(f)
-        colors[i].add(self.__color.scaled(1.0 - f))
+        colors[i] = colors[i].Scaled(f)
+        colors[i].Add(self.__color.Scaled(1.0 - f))
 

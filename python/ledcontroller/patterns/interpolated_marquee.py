@@ -66,6 +66,6 @@ class InterpolatedMarquee(Pattern, Buffer):
     colors = color_buffer.GetColors()
     f = self.__offset
     for i in xrange(min(len(colors), len(self._colors)-1)):
-      colors[i].add(self._colors[i].scaled(f))
-      colors[i].add(self._colors[i+1].scaled(1.0-f))
+      colors[i].Add(self._colors[i].Scaled(f))
+      colors[i].Add(self._colors[i+1].Scaled(1.0-f))
 
