@@ -27,28 +27,31 @@ if __name__ == '__main__':
   # colors), and manages writing them to the Arduino.
   if not DRAW:
     # Create a SendingBuffer with defaults.
-    sender = SendingPatternList()
+    color_sender = SendingPatternList()
   else:
-    sender = SendingPatternList(sending_buffer=TurtleBuffer())
+    color_sender = SendingPatternList(sending_buffer=TurtleBuffer())
 
   # Add some Patterns.
-  #sender.Append(InterpolatedMarquee(
+  #color_sender.Append(InterpolatedMarquee(
   #  sequences.GenerateRandom(bright_interval=6),
   #    speed=15))
-  sender.Append(InterpolatedMarquee(
+  color_sender.Append(InterpolatedMarquee(
     (c.Scaled(0.1) for c in
      sequences.GenerateHueGradient(repeat_interval=50)),
     speed=5.0))
-  sender.Append(Pulser(color=Color(rgb=(0, 0, 1)), reverse=True, add_delay=3.0))
+  color_sender.Append(Pulser(
+      color=Color(rgb=(0, 0, 1)),
+      reverse=True,
+      add_delay=3.0))
 
   # Open the serial device (connection to the Arduino).
   if DUMMY_SERIAL:
-    data_sender = data_sender.DummySender(SERIAL_DEVICE, silent=True)
+    serial_sender = data_sender.DummySender(SERIAL_DEVICE, silent=True)
   else:
-    data_sender = data_sender.Sender(SERIAL_DEVICE)
+    serial_sender = data_sender.Sender(SERIAL_DEVICE)
 
-  with data_sender:
-    sender.SetSender(data_sender)
+  with serial_sender:
+    color_sender.SetSender(serial_sender)
 
     t = time.time()
     actual_trials = 0
@@ -58,10 +61,10 @@ if __name__ == '__main__':
     print 'Type ^C (hold control, press c) to stop.'
     try:
       while True:
-        sender.UpdateAndSend()  # Uses data_sender to send the colors.
+        color_sender.UpdateAndSend()  # Uses serial_sender to send the colors.
         sys.stdout.write('.')
         sys.stdout.flush()
-        data_sender.ReadAndPrint()  # Reads any responses from the Arduino.
+        serial_sender.ReadAndPrint()  # Reads any responses from the Arduino.
         actual_trials += 1
     except KeyboardInterrupt:
       traceback.print_exc()
