@@ -9,7 +9,7 @@ class SendingBuffer(Buffer):
   def __init__(self, sender=None, **kwargs):
     """
     Args:
-      output_serial the Serial output stream to be written to,
+      sender The Serial output stream to be written to,
           which may be set/replaced at any point using SetSerial.
     """
     Buffer.__init__(self, **kwargs)
