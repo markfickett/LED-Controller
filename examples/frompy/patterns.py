@@ -66,7 +66,7 @@ if __name__ == '__main__':
         try:
           color_sender.UpdateAndSend()  # Uses serial_sender to send the colors.
           serial_sender.ReadAndPrint()  # Reads any responses from the Arduino.
-        except data_sender.TimeoutException as e:
+        except data_sender.TimeoutError as e:
           print 'Timeout waiting for acknowledgement during read/write.'
           exc_count += 1
           if exc_count >= 50:
