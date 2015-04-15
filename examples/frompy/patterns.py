@@ -55,17 +55,26 @@ if __name__ == '__main__':
 
     t = time.time()
     actual_trials = 0
+    exc_count = 0
 
     # Continue updating until all the Patterns expire.
     # If this does not happen, wait for control-C.
     print 'Type ^C (hold control, press c) to stop.'
     try:
       while True:
-        color_sender.UpdateAndSend()  # Uses serial_sender to send the colors.
-        sys.stdout.write('.')
-        sys.stdout.flush()
-        serial_sender.ReadAndPrint()  # Reads any responses from the Arduino.
         actual_trials += 1
+        try:
+          color_sender.UpdateAndSend()  # Uses serial_sender to send the colors.
+          serial_sender.ReadAndPrint()  # Reads any responses from the Arduino.
+        except data_sender.TimeoutException as e:
+          print 'Timeout waiting for acknowledgement during read/write.'
+          exc_count += 1
+          if exc_count >= 50:
+            print 'Giving up after too many timeouts.'
+            raise
+        if actual_trials % 100 == 0:
+          sys.stdout.write('.')
+          sys.stdout.flush()
     except KeyboardInterrupt:
       traceback.print_exc()
       print 'Got ^C, exiting.'
